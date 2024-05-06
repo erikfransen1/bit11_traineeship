@@ -1,0 +1,2 @@
+# download and extract ANNOVAR
+tar -xvf archive.tar.gz
