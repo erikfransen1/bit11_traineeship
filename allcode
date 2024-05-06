@@ -1,2 +1,6 @@
 # download and extract ANNOVAR
 tar -xvf archive.tar.gz
+
+git add allcode
+git commit -m 'first commit'
+git push origin main
