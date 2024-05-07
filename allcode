@@ -1,5 +1,5 @@
 # download and extract ANNOVAR
-tar -xvf archive.tar.gz
+tar -xvf annovar.latest.tar.gz
 
 git add allcode
 git commit -m 'first commit'
