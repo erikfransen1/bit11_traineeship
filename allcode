@@ -4,3 +4,20 @@ tar -xvf annovar.latest.tar.gz
 git add allcode
 git commit -m 'first commit'
 git push origin main
+
+# annovar executables in annovar folder
+# create humandb subfolder in annovar folder
+# run commands to download databases
+perl annotate_variation.pl -buildver hg19 -downdb -webfrom annovar refGene humandb/
+perl annotate_variation.pl -buildver hg19 -downdb cytoBand humandb/
+perl annotate_variation.pl -buildver hg19 -downdb -webfrom annovar exac03 humandb/
+perl annotate_variation.pl -buildver hg19 -downdb -webfrom annovar avsnp147 humandb/ 
+perl annotate_variation.pl -buildver hg19 -downdb -webfrom annovar dbnsfp30a humandb/
+
+
+# annotate variants in examplefile ex1.avinput based upon refGene, cytoBand etc... and 
+# write output to myanno file 
+# 
+perl table_annovar.pl example/ex1.avinput humandb/ -buildver hg19 -out myanno -remove -protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a -operation gx,r,f,f,f -nastring . -csvout -polish -xref example/gene_xref.txt
+
+# open output file in Excel
