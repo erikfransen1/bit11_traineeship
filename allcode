@@ -15,9 +15,38 @@ perl annotate_variation.pl -buildver hg19 -downdb -webfrom annovar avsnp147 huma
 perl annotate_variation.pl -buildver hg19 -downdb -webfrom annovar dbnsfp30a humandb/
 
 
+### table_annovar.pl ####
+
 # annotate variants in examplefile ex1.avinput based upon refGene, cytoBand etc... and 
 # write output to myanno file 
 # 
 perl table_annovar.pl example/ex1.avinput humandb/ -buildver hg19 -out myanno -remove -protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a -operation gx,r,f,f,f -nastring . -csvout -polish -xref example/gene_xref.txt
 
 # open output file in Excel
+#
+# with full xref 
+#
+perl table_annovar.pl example/ex1.avinput humandb/ -buildver hg19 -out myanno2 -remove -protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a -operation gx,r,f,f,f -nastring . -csvout -polish -xref example/gene_fullxref.txt
+
+# VCF as input (ex2.vcf in example directory)
+perl table_annovar.pl example/ex2.vcf humandb/ -buildver hg19 -out myanno -remove -protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a -operation g,r,f,f,f -nastring . -vcfinput -polish
+
+# compare original VCF to annotated VCF
+# column INFO contains additional data
+# exta info fields are listed in header (ANNOVAR_DATE until ALLELE_END) 
+#
+# include variants within 10 bp from exon boundary
+perl table_annovar.pl example/ex2.vcf humandb/ -buildver hg19 -out myanno -remove -protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a -operation g,r,f,f,f  -nastring . -vcfinput -polish -intronhgvs 10
+
+#specify hgvs output format for refseq
+perl table_annovar.pl example/ex2.vcf humandb/ -buildver hg19 -out myanno -remove -protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a -operation g,r,f,f,f -arg '-hgvs',,,, -nastring . -vcfinput -polish
+
+
+### annotate_variation.pl ###
+#
+# gene-based annotation
+# classifies variants into nonsynonymous, intronic, etc.
+# results in ex1.avintput.exonic_variant and ex1.avinput.variant_function
+perl annotate_variation.pl -geneanno -dbtype refGene -buildver hg19 example/ex1.avinput humandb/
+perl annotate_variation.pl -regionanno -dbtype cytoBand -buildver hg19 example/ex1.avinput humandb/
+perl annotate_variation.pl -filter -dbtype exac03 -buildver hg19 example/ex1.avinput humandb/
