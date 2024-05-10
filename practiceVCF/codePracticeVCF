@@ -1,2 +1,5 @@
 # practice annotation on 2 VCF files
 # sample.vcf and grch38_chr4.vcf
+#
+# always need full path of annovar .pl files for script, output db and humandb folder
+# perl home/efransen/BIT11_traineeship/annovar/annotate_variation.pl -out (whatever) /home/efransen/BIT11_traineeship/annovar/humandb
