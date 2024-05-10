@@ -48,5 +48,38 @@ perl table_annovar.pl example/ex2.vcf humandb/ -buildver hg19 -out myanno -remov
 # classifies variants into nonsynonymous, intronic, etc.
 # results in ex1.avintput.exonic_variant and ex1.avinput.variant_function
 perl annotate_variation.pl -geneanno -dbtype refGene -buildver hg19 example/ex1.avinput humandb/
+
+# cytogenetic band
 perl annotate_variation.pl -regionanno -dbtype cytoBand -buildver hg19 example/ex1.avinput humandb/
+
+# filter based : present or absent in exac
 perl annotate_variation.pl -filter -dbtype exac03 -buildver hg19 example/ex1.avinput humandb/
+
+# convert vcf to annovar input file (only first sample)
+perl convert2annovar.pl -format vcf4 example/ex2.vcf > ex2.avinput
+
+# convert to annovar file  separately by sample 
+perl convert2annovar.pl -format vcf4 example/ex2.vcf -outfile ex2 -allsample
+
+# with extra info
+perl convert2annovar.pl -format vcf4 example/ex2.vcf -outfile ex2 -allsample -includeinfo
+
+#include zygosity
+perl convert2annovar.pl -format vcf4 example/ex2.vcf -outfile ex2 -allsample -include -withzyg
+
+# with frequency
+perl convert2annovar.pl -format vcf4 example/ex2.vcf -outfile ex2.avinput -allsample -withfreq
+
+# with GT info for separate samples
+perl convert2annovar.pl -format vcf4 example/ex2.vcf -outfile ex2.avinput -allsample -withfreq -includeinfo
+
+#with VCF header
+# = way to split large VCF into small VCF by sample
+perl convert2annovar.pl -format vcf4 example/ex2.vcf -outfile ex2.avinput -allsample -include -comment
+
+# annotate given list of SNPs
+# listed in file snplist.txt 
+perl convert2annovar.pl -format rsid example/snplist.txt -dbsnpfile humandb/hg19_snp138.txt > snplist.avinput 
+
+# apparently hg19_snp138.txt file missing
+perl annotate_variation.pl -downdb -buildver hg19 -webfrom annovar snp138 humandb
