@@ -81,5 +81,32 @@ perl convert2annovar.pl -format vcf4 example/ex2.vcf -outfile ex2.avinput -allsa
 # listed in file snplist.txt 
 perl convert2annovar.pl -format rsid example/snplist.txt -dbsnpfile humandb/hg19_snp138.txt > snplist.avinput 
 
+# error message 
 # apparently hg19_snp138.txt file missing
+# download via annotate_variation.pl
 perl annotate_variation.pl -downdb -buildver hg19 -webfrom annovar snp138 humandb
+
+# annotations for snps in dbSNP have been downloaded to hg19_snp138.txt in humandb folder
+# re-run annotations on snplist
+#
+perl convert2annovar.pl -format rsid example/snplist.txt -dbsnpfile humandb/hg19_snp138.txt > snplist.avinput
+
+# filter out snps in dbSNP
+# generate 2 files with dropped SNPs and filtered SNPs
+perl annotate_variation.pl -filter -out ex1 -build hg19 -dbtype snp138 example/ex1.avinput humandb/
+
+# All SNPs in a genomic region
+# no input file with variants, only output and specify which region
+#
+# First retrieve human sequence build hg19
+# creates subfolder hg19_seq in humandb folder
+perl annotate_variation.pl -downdb -build hg19 seq humandb/hg19_seq/
+
+# run search for region of interest
+perl convert2annovar.pl -format region -seqdir humandb/hg19_seq/ chr1:2000001-2000003
+
+# with given size for insertion deletion
+perl convert2annovar.pl -format region -seqdir humandb/hg19_seq/ chr1:2000001-2000003 -inssize 1 -delsize 2
+
+# all variants in a transcript
+perl convert2annovar.pl -format transcript NM_022162 -gene humandb/hg19_refGene.txt -seqdir humandb/hg19_seq/ > NM_022162.avinput
