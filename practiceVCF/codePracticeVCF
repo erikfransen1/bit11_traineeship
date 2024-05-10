@@ -3,3 +3,9 @@
 #
 # always need full path of annovar .pl files for script, output db and humandb folder
 # perl home/efransen/BIT11_traineeship/annovar/annotate_variation.pl -out (whatever) /home/efransen/BIT11_traineeship/annovar/humandb
+# input file sample.vcf
+# vcf input
+# no xref file : refseq = only gene-base with no cross ref
+# csvout not compatible with vcfinput
+perl ~/BIT11_traineeship/annovar/table_annovar.pl sample.vcf ~/BIT11_traineeship/annovar/humandb/ -buildver hg19 -out annoSample -remove -protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a -operation g,r,f,f,f -nastring . -polish -vcfinput
+
