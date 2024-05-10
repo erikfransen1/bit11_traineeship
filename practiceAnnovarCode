@@ -1,0 +1,112 @@
+# download and extract ANNOVAR
+tar -xvf annovar.latest.tar.gz
+
+git add allcode
+git commit -m 'first commit'
+git push origin main
+
+# annovar executables in annovar folder
+# create humandb subfolder in annovar folder
+# run commands to download databases
+perl annotate_variation.pl -buildver hg19 -downdb -webfrom annovar refGene humandb/
+perl annotate_variation.pl -buildver hg19 -downdb cytoBand humandb/
+perl annotate_variation.pl -buildver hg19 -downdb -webfrom annovar exac03 humandb/
+perl annotate_variation.pl -buildver hg19 -downdb -webfrom annovar avsnp147 humandb/ 
+perl annotate_variation.pl -buildver hg19 -downdb -webfrom annovar dbnsfp30a humandb/
+
+
+### table_annovar.pl ####
+
+# annotate variants in examplefile ex1.avinput based upon refGene, cytoBand etc... and 
+# write output to myanno file 
+# 
+perl table_annovar.pl example/ex1.avinput humandb/ -buildver hg19 -out myanno -remove -protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a -operation gx,r,f,f,f -nastring . -csvout -polish -xref example/gene_xref.txt
+
+# open output file in Excel
+#
+# with full xref 
+#
+perl table_annovar.pl example/ex1.avinput humandb/ -buildver hg19 -out myanno2 -remove -protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a -operation gx,r,f,f,f -nastring . -csvout -polish -xref example/gene_fullxref.txt
+
+# VCF as input (ex2.vcf in example directory)
+perl table_annovar.pl example/ex2.vcf humandb/ -buildver hg19 -out myanno -remove -protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a -operation g,r,f,f,f -nastring . -vcfinput -polish
+
+# compare original VCF to annotated VCF
+# column INFO contains additional data
+# exta info fields are listed in header (ANNOVAR_DATE until ALLELE_END) 
+#
+# include variants within 10 bp from exon boundary
+perl table_annovar.pl example/ex2.vcf humandb/ -buildver hg19 -out myanno -remove -protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a -operation g,r,f,f,f  -nastring . -vcfinput -polish -intronhgvs 10
+
+#specify hgvs output format for refseq
+perl table_annovar.pl example/ex2.vcf humandb/ -buildver hg19 -out myanno -remove -protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a -operation g,r,f,f,f -arg '-hgvs',,,, -nastring . -vcfinput -polish
+
+
+### annotate_variation.pl ###
+#
+# gene-based annotation
+# classifies variants into nonsynonymous, intronic, etc.
+# results in ex1.avintput.exonic_variant and ex1.avinput.variant_function
+perl annotate_variation.pl -geneanno -dbtype refGene -buildver hg19 example/ex1.avinput humandb/
+
+# cytogenetic band
+perl annotate_variation.pl -regionanno -dbtype cytoBand -buildver hg19 example/ex1.avinput humandb/
+
+# filter based : present or absent in exac
+perl annotate_variation.pl -filter -dbtype exac03 -buildver hg19 example/ex1.avinput humandb/
+
+# convert vcf to annovar input file (only first sample)
+perl convert2annovar.pl -format vcf4 example/ex2.vcf > ex2.avinput
+
+# convert to annovar file  separately by sample 
+perl convert2annovar.pl -format vcf4 example/ex2.vcf -outfile ex2 -allsample
+
+# with extra info
+perl convert2annovar.pl -format vcf4 example/ex2.vcf -outfile ex2 -allsample -includeinfo
+
+#include zygosity
+perl convert2annovar.pl -format vcf4 example/ex2.vcf -outfile ex2 -allsample -include -withzyg
+
+# with frequency
+perl convert2annovar.pl -format vcf4 example/ex2.vcf -outfile ex2.avinput -allsample -withfreq
+
+# with GT info for separate samples
+perl convert2annovar.pl -format vcf4 example/ex2.vcf -outfile ex2.avinput -allsample -withfreq -includeinfo
+
+#with VCF header
+# = way to split large VCF into small VCF by sample
+perl convert2annovar.pl -format vcf4 example/ex2.vcf -outfile ex2.avinput -allsample -include -comment
+
+# annotate given list of SNPs
+# listed in file snplist.txt 
+perl convert2annovar.pl -format rsid example/snplist.txt -dbsnpfile humandb/hg19_snp138.txt > snplist.avinput 
+
+# error message 
+# apparently hg19_snp138.txt file missing
+# download via annotate_variation.pl
+perl annotate_variation.pl -downdb -buildver hg19 -webfrom annovar snp138 humandb
+
+# annotations for snps in dbSNP have been downloaded to hg19_snp138.txt in humandb folder
+# re-run annotations on snplist
+#
+perl convert2annovar.pl -format rsid example/snplist.txt -dbsnpfile humandb/hg19_snp138.txt > snplist.avinput
+
+# filter out snps in dbSNP
+# generate 2 files with dropped SNPs and filtered SNPs
+perl annotate_variation.pl -filter -out ex1 -build hg19 -dbtype snp138 example/ex1.avinput humandb/
+
+# All SNPs in a genomic region
+# no input file with variants, only output and specify which region
+#
+# First retrieve human sequence build hg19
+# creates subfolder hg19_seq in humandb folder
+perl annotate_variation.pl -downdb -build hg19 seq humandb/hg19_seq/
+
+# run search for region of interest
+perl convert2annovar.pl -format region -seqdir humandb/hg19_seq/ chr1:2000001-2000003
+
+# with given size for insertion deletion
+perl convert2annovar.pl -format region -seqdir humandb/hg19_seq/ chr1:2000001-2000003 -inssize 1 -delsize 2
+
+# all variants in a transcript
+perl convert2annovar.pl -format transcript NM_022162 -gene humandb/hg19_refGene.txt -seqdir humandb/hg19_seq/ > NM_022162.avinput
