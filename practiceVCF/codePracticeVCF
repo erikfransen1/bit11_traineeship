@@ -9,3 +9,32 @@
 # csvout not compatible with vcfinput
 perl ~/BIT11_traineeship/annovar/table_annovar.pl sample.vcf ~/BIT11_traineeship/annovar/humandb/ -buildver hg19 -out annoSample -remove -protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a -operation g,r,f,f,f -nastring . -polish -vcfinput
 
+# for second VCF file (chr4)
+
+perl ~/BIT11_traineeship/annovar/table_annovar.pl grch38_chr4_10083863-10181258.vcf ~/BIT11_traineeship/annovar/humandb/ -buildver hg19 -out annoChr4 -remove -protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a -operation g,r,f,f,f -nastring . -polish -vcfinput
+
+
+# tansfer annotated VCF to windows for analysis with vcfR package
+# read in annotated VCF with vcfR
+# had trouble running INFO2df function to extract INFO column from annotated VCF
+# removed GERP++ field as it made grep crash
+# command INFO2df works after removal of GERP++
+#
+# convert annotated VCF to tidyverse object (list of 3)
+# to work with tidyverse
+tidyVCF<-vcfR2tidy(myVCF)
+
+# extract INFO fields (added using annotation)
+infoFields<-extract_info_tidy(myVCF)
+
+# dataframe with genotypes = long format compared to myVCF@gt
+# 9 rows per sample, with fields (incl. GT) in separate column
+genotypes<-extract_gt_tidy(myVCF)
+
+head(infoFields)
+head(genotypes)
+# entire genotype file
+print(n=30,genotypes)
+as.data.frame(infoFields)
+vcf_field_names(myVCF,tag = "INFO")
+
