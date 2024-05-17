@@ -2,6 +2,7 @@ setwd("C:/Users/fransen/Dropbox/Howest/11_Traineeship/practiceAnnovar/outputChr4
 library(vcfR)
 library(tidyverse)
 
+# read in original VCF
 myVCF<-read.vcfR("annoChr4.hg19_multianno.vcf")
 
 # replace GERP++ by GERP in meta, fix and gt
@@ -9,7 +10,10 @@ myVCF@meta<-gsub("GERP++_","GERP",myVCF@meta,fixed=TRUE)
 myVCF@fix<-gsub("GERP++_","GERP",myVCF@fix,fixed=TRUE)
 myVCF@gt<-gsub("GERP++_","GERP",myVCF@gt,fixed=TRUE)
 
-
+#### function to:
+  ##  detect duplicate IDs
+  ##  print list of duplicate IDs
+  ##  set duplicate ID to missing
 
 detect_dupl_ID<-function(inputVCF){
   
