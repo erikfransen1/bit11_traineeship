@@ -18,8 +18,11 @@ perl ~/BIT11_traineeship/annovar/table_annovar.pl sample.vcf ~/BIT11_traineeship
 # for second VCF file (chr4)
 perl ~/BIT11_traineeship/annovar/table_annovar.pl grch38_chr4_10083863-10181258.vcf ~/BIT11_traineeship/annovar/humandb/ -buildver hg19 -out annoChr4 -remove -protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a -operation g,r,f,f,f -nastring . -polish -vcfinput
 
+# only refseq and dbSNP
+perl ~/BIT11_traineeship/annovar/table_annovar.pl grch38_chr4_10083863-10181258.vcf ~/BIT11_traineeship/annovar/humandb/ -buildver hg19 -out annoChr4_2 -remove -protocol refGene,avsnp147 -operation g,f -nastring . -polish -vcfinput
 
 
+# 
 
 # transfer annotated VCF to windows for analysis with vcfR package
 # read in annotated VCF with vcfR
@@ -34,6 +37,7 @@ perl ~/BIT11_traineeship/annovar/table_annovar.pl grch38_chr4_10083863-10181258.
 myVCF@meta<-gsub("GERP++_","GERP",myVCF@meta,fixed=TRUE)
 myVCF@fix<-gsub("GERP++_","GERP",myVCF@fix,fixed=TRUE)
 myVCF@gt<-gsub("GERP++_","GERP",myVCF@gt,fixed=TRUE)
+
 
 
 
