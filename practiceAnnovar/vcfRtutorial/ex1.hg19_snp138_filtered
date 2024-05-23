@@ -1,0 +1,9 @@
+8       8887539 8887539 A       T	comments: a mutation that results in premature stop codon
+chr14   95602958        95602958        A       C	comments: a variant that affects splicing of UTR regions
+8       8887540 8887540 G       GGAA	comments: a mutation that results in insertion of a new amino acid
+13	20797176	21105944	0	-	comments: a 342kb deletion encompassing GJB6, associated with hearing loss
+8       8887536 8887537 AG      GATT	comments: a mutation that creates a stop codon 2 amino acids downstream
+1	13211293	13211294	TC	-	comments: rs59770105, a 2-bp deletion
+8	8887543	8887543	A	T	comments: a mutation that abolishes stop codon
+1	105492231	105492231	A	ATAAA	comments: rs10552169, a block substitution
+5       1295288 1295288 G       A	comments: a variant upstream of transcriptional start site
