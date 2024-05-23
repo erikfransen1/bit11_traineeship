@@ -89,3 +89,5 @@ QC_my_VCF(input="grch38_chr4_10083863-10181258.vcf",parameter="DP")
 QC_my_VCF(input="grch38_chr4_10083863-10181258.vcf",parameter="GQ")
 QC_my_VCF(input="ex2.vcf",parameter="DP")
 QC_my_VCF(input="ex2.vcf",parameter="GQ")
+
+#where is the graph?

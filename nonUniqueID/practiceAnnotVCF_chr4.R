@@ -123,4 +123,4 @@ geno_tidy = extract_gt_tidy(myVCF) %>%
 
 ## ERROR : not all ID are unique
 
-
+#this is a test commit
