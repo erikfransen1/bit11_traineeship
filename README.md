@@ -9,8 +9,8 @@ Before actually taking off with the project, I had to learn several skills to wo
 
 
 ### Slurm
-The main jobs in this project - annotations of large VCF files - were carried out on a linux server with Ubuntu version **. Jobs on the server had to be submitted by the workload manager Slurm (version **). 
+The main jobs in this project - annotations of large VCF files - were carried out on a linux server with Ubuntu version **. Jobs on the server had to be submitted by the workload manager Slurm (version **). <br>
 Slurm has three key functions to enable working on the server. First, it allocates access to resources (compute nodes) to users for some duration of time so they can perform work. Second, it provides a framework for starting, executing, and monitoring work on the set of allocated nodes. Finally, it arbitrates contention for resources by managing a queue of pending work.
-The first task in this project was to practice working with Slurm. In particular, submitting R jobs to the server.
+The first task in this project was to practice working with Slurm. In particular, submitting R jobs to the server.<br>
 Folder **practice Slurm** contains some exercises on the use of Slurm on the server. The Rscript *readin.R* contains commands to read in the input in the file *inputData.txt*. In the Rscript *graph.R* first reads in the data by sourcing the *readin.R*, then runs a custom-made function to generate a graph using tidyverse. The resulting graph is experted to the plot *meanOutcome(logscale).pdf*.
 
