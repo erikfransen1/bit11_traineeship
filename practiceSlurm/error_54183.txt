@@ -1,0 +1,165 @@
+also installing the dependencies ‘gargle’, ‘curl’, ‘googledrive’, ‘googlesheets4’, ‘haven’, ‘httr’, ‘ragg’, ‘readxl’, ‘rvest’, ‘covr’, ‘feather’, ‘mockr’
+
+trying URL 'http://cran.us.r-project.org/src/contrib/gargle_1.5.2.tar.gz'
+Content type 'application/x-gzip' length 627560 bytes (612 KB)
+==================================================
+downloaded 612 KB
+
+trying URL 'http://cran.us.r-project.org/src/contrib/curl_5.2.1.tar.gz'
+Content type 'application/x-gzip' length 716695 bytes (699 KB)
+==================================================
+downloaded 699 KB
+
+trying URL 'http://cran.us.r-project.org/src/contrib/googledrive_2.1.1.tar.gz'
+Content type 'application/x-gzip' length 1609266 bytes (1.5 MB)
+==================================================
+downloaded 1.5 MB
+
+trying URL 'http://cran.us.r-project.org/src/contrib/googlesheets4_1.1.1.tar.gz'
+Content type 'application/x-gzip' length 232584 bytes (227 KB)
+==================================================
+downloaded 227 KB
+
+trying URL 'http://cran.us.r-project.org/src/contrib/haven_2.5.4.tar.gz'
+Content type 'application/x-gzip' length 313332 bytes (305 KB)
+==================================================
+downloaded 305 KB
+
+trying URL 'http://cran.us.r-project.org/src/contrib/httr_1.4.7.tar.gz'
+Content type 'application/x-gzip' length 118500 bytes (115 KB)
+==================================================
+downloaded 115 KB
+
+trying URL 'http://cran.us.r-project.org/src/contrib/ragg_1.3.0.tar.gz'
+Content type 'application/x-gzip' length 430242 bytes (420 KB)
+==================================================
+downloaded 420 KB
+
+trying URL 'http://cran.us.r-project.org/src/contrib/readxl_1.4.3.tar.gz'
+Content type 'application/x-gzip' length 2093488 bytes (2.0 MB)
+==================================================
+downloaded 2.0 MB
+
+trying URL 'http://cran.us.r-project.org/src/contrib/rvest_1.0.4.tar.gz'
+Content type 'application/x-gzip' length 115876 bytes (113 KB)
+==================================================
+downloaded 113 KB
+
+trying URL 'http://cran.us.r-project.org/src/contrib/covr_3.6.4.tar.gz'
+Content type 'application/x-gzip' length 163362 bytes (159 KB)
+==================================================
+downloaded 159 KB
+
+trying URL 'http://cran.us.r-project.org/src/contrib/feather_0.3.5.tar.gz'
+Content type 'application/x-gzip' length 73812 bytes (72 KB)
+==================================================
+downloaded 72 KB
+
+trying URL 'http://cran.us.r-project.org/src/contrib/mockr_0.2.1.tar.gz'
+Content type 'application/x-gzip' length 20956 bytes (20 KB)
+==================================================
+downloaded 20 KB
+
+trying URL 'http://cran.us.r-project.org/src/contrib/tidyverse_2.0.0.tar.gz'
+Content type 'application/x-gzip' length 704618 bytes (688 KB)
+==================================================
+downloaded 688 KB
+
+* installing *source* package ‘curl’ ...
+** package ‘curl’ successfully unpacked and MD5 sums checked
+** using staged installation
+ERROR: configuration failed for package ‘curl’
+* removing ‘/home/efransen/miniconda3/lib/R/library/curl’
+* installing *source* package ‘haven’ ...
+** package ‘haven’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+using C compiler: ‘x86_64-conda-linux-gnu-cc (Anaconda gcc) 11.2.0’
+using C++ compiler: ‘x86_64-conda-linux-gnu-c++ (Anaconda gcc) 11.2.0’
+installing to /home/efransen/miniconda3/lib/R/library/00LOCK-haven/00new/haven/libs
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+*** copying figures
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded from temporary location
+ERROR: loading failed
+* removing ‘/home/efransen/miniconda3/lib/R/library/haven’
+* installing *source* package ‘ragg’ ...
+** package ‘ragg’ successfully unpacked and MD5 sums checked
+** using staged installation
+ERROR: configuration failed for package ‘ragg’
+* removing ‘/home/efransen/miniconda3/lib/R/library/ragg’
+* installing *source* package ‘readxl’ ...
+** package ‘readxl’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+using C compiler: ‘x86_64-conda-linux-gnu-cc (Anaconda gcc) 11.2.0’
+using C++ compiler: ‘x86_64-conda-linux-gnu-c++ (Anaconda gcc) 11.2.0’
+installing to /home/efransen/miniconda3/lib/R/library/00LOCK-readxl/00new/readxl/libs
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+*** copying figures
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded from temporary location
+ERROR: loading failed
+* removing ‘/home/efransen/miniconda3/lib/R/library/readxl’
+* installing *source* package ‘feather’ ...
+** package ‘feather’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+using C++ compiler: ‘x86_64-conda-linux-gnu-c++ (Anaconda gcc) 11.2.0’
+using C++11
+installing to /home/efransen/miniconda3/lib/R/library/00LOCK-feather/00new/feather/libs
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** checking absolute paths in shared objects and dynamic libraries
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (feather)
+* installing *source* package ‘mockr’ ...
+** package ‘mockr’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (mockr)
+ERROR: dependency ‘curl’ is not available for package ‘httr’
+* removing ‘/home/efransen/miniconda3/lib/R/library/httr’
+ERROR: dependency ‘httr’ is not available for package ‘gargle’
+* removing ‘/home/efransen/miniconda3/lib/R/library/gargle’
+ERROR: dependency ‘httr’ is not available for package ‘rvest’
+* removing ‘/home/efransen/miniconda3/lib/R/library/rvest’
+ERROR: dependency ‘httr’ is not available for package ‘covr’
+* removing ‘/home/efransen/miniconda3/lib/R/library/covr’
+ERROR: dependencies ‘gargle’, ‘httr’ are not available for package ‘googledrive’
+* removing ‘/home/efransen/miniconda3/lib/R/library/googledrive’
+ERROR: dependencies ‘curl’, ‘gargle’, ‘googledrive’, ‘httr’ are not available for package ‘googlesheets4’
+* removing ‘/home/efransen/miniconda3/lib/R/library/googlesheets4’
+ERROR: dependencies ‘googledrive’, ‘googlesheets4’, ‘haven’, ‘httr’, ‘ragg’, ‘readxl’, ‘rvest’ are not available for package ‘tidyverse’
+* removing ‘/home/efransen/miniconda3/lib/R/library/tidyverse’
+
+The downloaded source packages are in
+	‘/tmp/Rtmp3cVIQU/downloaded_packages’
+Updating HTML index of packages in '.Library'
+Making 'packages.html' ... done
+There were 11 warnings (use warnings() to see them)
