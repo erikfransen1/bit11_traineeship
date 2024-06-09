@@ -22,9 +22,9 @@ The folder practiceAnnovar in the Git repository contains 3 subfolders:
 - outputVCFfromTutorial : practice on ex1.avinput and ex2.vcf (files from ANNOVAR quick startup guise)
 - outputSample.vcf : practice on small VCF file supplied by external supervisors
 - outputChr4.vcf : practice on VCF with variants on Chr4 (supplied by external supervisors)<br>
-Subsequently, the output from ANNOVAR (ie. the annotated files) were read in via vcfR
+Subsequently, the output from ANNOVAR (ie. the annotated files) were read in via vcfR.
 
 
 
 ### vcfR
-vcfR (version 1.15.0) is an R package to handle vcf files in R. The tutorial 
+vcfR (version 1.15.0) is an R package to handle vcf files in R. We applied vcfR to the VCF files annotated with ANNOVAR, and the code is shown in the githyub repository in folder practiceVCF The document practiceVCF/practiceAnnotVCF_sample.R shows application of vcfR onto the sample.vcf file (supplied by external supervisors)
