@@ -64,8 +64,6 @@ genotypes<-extract_gt_tidy(myVCF)
 # print full DF with genotypes 
 print(n=30,genotypes)
 
-
-
 # extract all field names to tidy DF
 allFields<-vcf_field_names(myVCF,tag = "INFO")
 
