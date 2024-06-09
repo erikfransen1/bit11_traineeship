@@ -1,8 +1,11 @@
 # Overview
 ## Preparation and practicing
 Before actually taking off with the project, I had to learn several skills to work on the server and to handle and annotate VCF files. These were separately practiced before the actual development of the final code. They include:
--Slurm
--vcfR
+- Slurm,the workflow manager on the server
+-	vcfR, an R package to handle VCF files
+-	biomaRt, and R package serving as API to access ensembl
+-	ANNOVAR, software to annotate VCF files
+
 
 
 ### Working on the server
