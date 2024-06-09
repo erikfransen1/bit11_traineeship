@@ -3,8 +3,6 @@
 
 # see R code practiceVCF in Windows 
 
-# vcfR analysis required troubleshooting nonUnique ID
-
 # had trouble running INFO2df function to extract INFO column from annotated VCF
 # removed GERP++ field as it made grep crash
 
@@ -13,3 +11,5 @@
 myVCF@meta<-gsub("GERP++_","GERP",myVCF@meta,fixed=TRUE)
 myVCF@fix<-gsub("GERP++_","GERP",myVCF@fix,fixed=TRUE)
 myVCF@gt<-gsub("GERP++_","GERP",myVCF@gt,fixed=TRUE)
+
+#  one of the further vcfR analyses required troubleshooting nonUnique ID
