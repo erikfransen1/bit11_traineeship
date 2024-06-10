@@ -45,8 +45,9 @@ The automation of the planned script will require running R scripts at the comma
 The *sayHello.R* is a toy example from an R function to be ran at the command line. The scripts *display_file.R* and *example.R* were retrieved from optparse tutorials. The *printScatter.R* is a script that generates a simple scatterplot, but with the arguments from the plot() function (including adding a title, X and Y axis labels, adding a regression line, specifying th color,...) in R supplied via the optparse arguments. The script *parseVCF.R* is a script (still under construction) to parse a VCF file using optparse).<br>
 <br>
 ### Visualization of VCF files
-To obtain a quick overview of the INFO fields in an annotated VCF files, we explore efficient ways for visualization. Several packages are available, including the Bioconductor package plotVCF or vcfstats. This latter package plots specific metics of the VCF, with the possibility to customize the plots and focus on variants with certain filters. This latter is currently the package of choice, partly due to the outage of the server - it does not need to load the full VCF into the memory and allows working with large VCF files in the virtual box.<br>
-This part of the code is still under development
+To obtain a quick overview of the INFO fields in an annotated VCF files, we explore efficient ways for visualization. Apart from the aforementioned vcfR package, several packages for visualizing VCF files are available, including the Bioconductor package plotVCF or vcfstats. This latter package plots specific metics of the VCF, with the possibility to customize the plots and focus on variants with certain filters. This latter is currently the package of choice, partly due to the outage of the server - it does not need to load the full VCF into the memory and allows working with large VCF files in the virtual box.<br>
+This part of the code is still under development. The code for some initial exercises is in *vcfstats_commands*. Due to trouble with the installation with pip, the program had to be ran via docker. <br>
+Other ways to plot metrics from VCF will be explores as soon as the outage of the server.
 
 
 
