@@ -1,0 +1,29 @@
+docker run \
+  -w /vcfstats \
+  -v $(pwd):/vcfstats
+  vcfstats \
+  --vcf ex2.vcf \
+  -o outputs \
+  --formula 'COUNT(1) ~ CONTIG' \
+  --title 'Number of variants on each chromosome'
+  
+    docker run \
+  -w /vcfstats/workdir \
+  -v $(pwd):/vcfstats/workdir \
+  --rm justold/vcfstats:latest \
+  vcfstats \
+  --vcf NA12878.vcf \
+  -o outputs \
+  --formula 'COUNT(1) ~ CONTIG' \
+  --title 'Number of variants on each chromosome'
+  
+  docker run \
+  -w /vcfstats/workdir \
+  -v $(pwd):/vcfstats/workdir \
+   --rm justold/vcfstats:latest \
+  vcfstats --vcf NA12878.vcf \
+    --outdir outputs \
+     --config config.toml \
+    --ggs 'scale_x_discrete(name ="Chromosome", \
+        limits=["1","2","3","4","5","6","7","8","9","10","X"]); \
+        ylab("# Variants")'
