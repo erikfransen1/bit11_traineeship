@@ -36,7 +36,7 @@ Some more advanced exploration of a vcf file, involving more use of tidyverse fu
 ### Rscript at command line
 The automation of the planned script will require running R scripts at the command line. This can be achieved with the command Rscript in bash. Passing on positional arguments at the commandline to the R functions inside the script is enabled by the optparse R package. Examples and code are in the folder **optparse**<br>
 The *sayHello.R* is a toy example from an R function to be ran at the command line. The scripts *display_file.R* and *example.R* were retrieved from optparse tutorials. The *printScatter.R* is a script that generates a simple scatterplot, but with the arguments from the plot() function (including adding a title, X and Y axis labels, adding a regression line, specifying th color,...) in R supplied via the optparse arguments. The script *parseVCF.R* is a script (still under construction) to parse a VCF file using optparse).<br>
-
+<br>
 
 ## Development of code
 ### QC of VCF input file
