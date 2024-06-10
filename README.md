@@ -1,4 +1,10 @@
 # Overview
+
+To develop a script to re-annotate old VCF files w-using the currently available annotations, we decided to work in 3 stages:
+- practicing skills to work on the server and to handle VCF files
+- developing pieces of code one-by-one
+- wrapping the peices of code to automate
+
 ## Preparation and practicing
 Before actually taking off with the project, I had to learn several skills to work on the server and to handle and annotate VCF files. These were separately practiced before the actual development of the final code. They include:
 - Slurm,the workflow manager on the server
