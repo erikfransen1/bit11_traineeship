@@ -46,6 +46,7 @@ The *sayHello.R* is a toy example from an R function to be ran at the command li
 <br>
 ### Visualization of VCF files
 To obtain a quick overview of the INFO fields in an annotated VCF files, we explore efficient ways for visualization. Several packages are available, including the Bioconductor package plotVCF or vcfstats. This latter package plots specific metics of the VCF, with the possibility to customize the plots and focus on variants with certain filters. This latter is currently the package of choice, partly due to the outage of the server - it does not need to load the full VCF into the memory and allows working with large VCF files in the virtual box.<br>
+This part of the code is still under development
 
 
 
