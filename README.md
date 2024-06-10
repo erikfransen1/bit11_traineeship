@@ -31,12 +31,12 @@ The folder practiceAnnovar in the Git repository contains 3 subfolders:
 Subsequently, the output from ANNOVAR (ie. the annotated files) were read in via vcfR.<br>
 <br>
 
-
 ### vcfR
 vcfR (version 1.15.0) is an R package to handle vcf files in R. We applied vcfR to the VCF files annotated with ANNOVAR, and the code is shown in the githyub repository in folder practiceVCF The document practiceVCF/practiceAnnotVCF_sample.R shows application of vcfR onto the sample.vcf file (supplied by external supervisors).<br>
 On two occasions, we received error messages. These are shown in the code *errorMessages.R*. The first time was due to the presence of the field "GERP++" in one of the INFO fields. The "++" is a regular expression causing an error in the INFO2df() function. This was fixed using the gsub() function, as shown in the code.<br> Subsequently, one of the VCF files showed an error message due to a non-unique ID. The solution to this problem is shown in the paragraph "Development of code", as a custom-made function was made for this.
 Some more advanced exploration of a vcf file, involving more use of tidyverse functions, was carried out in the script practiceVCF/practiceAnnotVCF_tidyverseSet6.R.<br>
 <br>
+
 ### biomaRt
 biomaRt is an R package serving as an API to access ensembl. The script *practiceBiomaRt.R* contains code from a biomaRt tutorial.<br> 
 
@@ -44,7 +44,7 @@ biomaRt is an R package serving as an API to access ensembl. The script *practic
 The automation of the planned script will require running R scripts at the command line. This can be achieved with the command Rscript in bash. Passing on positional arguments at the commandline to the R functions inside the script is enabled by the optparse R package. Examples and code are in the folder **optparse**<br>
 The *sayHello.R* is a toy example from an R function to be ran at the command line. The scripts *display_file.R* and *example.R* were retrieved from optparse tutorials. The *printScatter.R* is a script that generates a simple scatterplot, but with the arguments from the plot() function (including adding a title, X and Y axis labels, adding a regression line, specifying th color,...) in R supplied via the optparse arguments. The script *parseVCF.R* is a script (still under construction) to parse a VCF file using optparse).<br>
 <br>
-### visualization of VCF files
+### Visualization of VCF files
 To obtain a quick overview of the INFO fields in an annotated VCF files, we explore efficient ways for visualization. Several packages are available, including the Bioconductor package plotVCF or vcfstats. This latter package plots specific metics of the VCF, with the possibility to customize the plots and focus on variants with certain filters. This latter is currently the package of choice, partly due to the outage of the server - it does not need to load the full VCF into the memory and allows working with large VCF files in the virtual box.<br>
 
 
