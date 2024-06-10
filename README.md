@@ -31,6 +31,9 @@ vcfR (version 1.15.0) is an R package to handle vcf files in R. We applied vcfR 
 On two occasions, we received error messages. These are shown in the code *errorMessages.R*. The first time was due to the presence of the field "GERP++" in one of the INFO fields. The "++" is a regular expression causing an error in the INFO2df() function. This was fixed using the gsub() function, as shown in the code.<br> Subsequently, one of the VCF files showed an error message due to a non-unique ID. The solution to this problem is shown in the paragraph "Development of code", as a custom-made function was made for this.
 Some more advanced exploration of a vcf file, involving more use of tidyverse functions, was carried out in the script practiceVCF/practiceAnnotVCF_tidyverseSet6.R.<br>
 
+### Rscript at command line
+The automation of the planned script will require running R scripts at the command line. This can be achieved with the command Rscript in bash. Passing on positional arguments at the commandline to the R functions inside the script is enabled by the optparse R package. <br>
+To enable the inc
 
 
 ## Development of code
@@ -44,4 +47,4 @@ Using vcfR, we developed a custom-made R function for quality checking a VCF, in
 This code is supplied in : practiceVCF/QC.R
 
 ### Check for duplicate IDs
-Upon practicing with the VCF files using vcfR, we encountered an error message about the presence of duplicate IDs. This is shown in code *errorMessages_vcfR.R*. The search where these duplicate IDs arise, and what functions are not working, is shown in *troubleshoot duplicates.R*. Although these duplicate IDs shouldn't be present in a VCF file, we developed a custom made R function to detect these duplicate IDs, print a list of duplicate IDs and set the duplicate IDs to missing. The code is given in *troubleshoot duplicates_function.R*, and is applied to the problematic VCF file in *applyDuplicateFunction_vcfChr4.R*.
+Upon practicing with the VCF files using vcfR, we encountered an error message about the presence of duplicate IDs. The files related to this are given in teh folder **nonUniqueIDs**. This is shown in code *errorMessages_vcfR.R*. The search where these duplicate IDs arise, and what functions are not working, is shown in *troubleshoot duplicates.R*. Although these duplicate IDs shouldn't be present in a VCF file, we developed a custom made R function to detect these duplicate IDs, print a list of duplicate IDs and set the duplicate IDs to missing. The code is given in *troubleshoot duplicates_function.R*, and is applied to the problematic VCF file in *applyDuplicateFunction_vcfChr4.R*.
