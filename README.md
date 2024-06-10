@@ -50,3 +50,7 @@ This code is supplied in : practiceVCF/QC.R
 
 ### Check for duplicate IDs
 Upon practicing with the VCF files using vcfR, we encountered an error message about the presence of duplicate IDs. The files related to this are given in teh folder **nonUniqueIDs**. This is shown in code *errorMessages_vcfR.R*. The search where these duplicate IDs arise, and what functions are not working, is shown in *troubleshoot duplicates.R*. Although these duplicate IDs shouldn't be present in a VCF file, we developed a custom made R function to detect these duplicate IDs, print a list of duplicate IDs and set the duplicate IDs to missing. The code is given in *troubleshoot duplicates_function.R*, and is applied to the problematic VCF file in *applyDuplicateFunction_vcfChr4.R*.
+
+### Regulome DB
+Old annotation focuses on coding variants wand the predicion of their effect on protein structire. However, most GWAS hits are noncoding variants in intergenic regions, for which some regulatory effect is suspected. Since the purpose of this project is re-annotation of old VCF files with newly developed annotation, I wanted to explore the possibilities of annotating the noncoding varants to flag the ones that are most likely influencing gene expression. Regulome DB gives likelihood that variant outside coding region is involved in regulation. Package haploR serves as API. We developed script to retrieve probability that variants in VCF file is involved in regulattion.<br>
+Due to the outage of the server, developed scripts for RegulomeDB are currently not accessible.<br>
