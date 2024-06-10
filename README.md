@@ -44,4 +44,4 @@ Using vcfR, we developed a custom-made R function for quality checking a VCF, in
 This code is supplied in : practiceVCF/QC.R
 
 ### Check for duplicate IDs
-Upon analysing the VCF files with vcfR, we encountered an error message about the presence of duplicate IDs.  
+Upon practicing with the VCF files using vcfR, we encountered an error message about the presence of duplicate IDs. This is shown in code *errorMessages_vcfR.R*. The search where these duplicate IDs arise, and what functions are not working, is shown in *troubleshoot duplicates.R*. Although these duplicate IDs shouldn't be present in a VCF file, we developed a custom made R function to detect these duplicate IDs, print a list of duplicate IDs and set the duplicate IDs to missing. The code is given in *troubleshoot duplicates_function.R*, and is applied to the problematic VCF file in *applyDuplicateFunction_vcfChr4.R*.
