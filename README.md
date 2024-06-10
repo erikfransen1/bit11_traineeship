@@ -1,4 +1,10 @@
 # Overview
+
+To develop a script to re-annotate old VCF files w-using the currently available annotations, we decided to work in 3 stages:
+- practicing skills to work on the server and to handle VCF files
+- developing pieces of code one-by-one
+- wrapping the pieces of code to automate
+
 ## Preparation and practicing
 Before actually taking off with the project, I had to learn several skills to work on the server and to handle and annotate VCF files. These were separately practiced before the actual development of the final code. They include:
 - Slurm,the workflow manager on the server
@@ -32,6 +38,8 @@ vcfR (version 1.15.0) is an R package to handle vcf files in R. We applied vcfR 
 On two occasions, we received error messages. These are shown in the code *errorMessages.R*. The first time was due to the presence of the field "GERP++" in one of the INFO fields. The "++" is a regular expression causing an error in the INFO2df() function. This was fixed using the gsub() function, as shown in the code.<br> Subsequently, one of the VCF files showed an error message due to a non-unique ID. The solution to this problem is shown in the paragraph "Development of code", as a custom-made function was made for this.
 Some more advanced exploration of a vcf file, involving more use of tidyverse functions, was carried out in the script practiceVCF/practiceAnnotVCF_tidyverseSet6.R.<br>
 <br>
+### biomaRt
+biomaRt is an R package serving as an API to access ensembl. The script *practiceBiomaRt.R* contains code from a biomaRt tutorial.<br> 
 
 ### Rscript at command line
 The automation of the planned script will require running R scripts at the command line. This can be achieved with the command Rscript in bash. Passing on positional arguments at the commandline to the R functions inside the script is enabled by the optparse R package. Examples and code are in the folder **optparse**<br>
@@ -50,3 +58,7 @@ This code is supplied in : practiceVCF/QC.R
 
 ### Check for duplicate IDs
 Upon practicing with the VCF files using vcfR, we encountered an error message about the presence of duplicate IDs. The files related to this are given in teh folder **nonUniqueIDs**. This is shown in code *errorMessages_vcfR.R*. The search where these duplicate IDs arise, and what functions are not working, is shown in *troubleshoot duplicates.R*. Although these duplicate IDs shouldn't be present in a VCF file, we developed a custom made R function to detect these duplicate IDs, print a list of duplicate IDs and set the duplicate IDs to missing. The code is given in *troubleshoot duplicates_function.R*, and is applied to the problematic VCF file in *applyDuplicateFunction_vcfChr4.R*.
+
+### Regulome DB
+Old annotation focuses on coding variants wand the predicion of their effect on protein structire. However, most GWAS hits are noncoding variants in intergenic regions, for which some regulatory effect is suspected. Since the purpose of this project is re-annotation of old VCF files with newly developed annotation, I wanted to explore the possibilities of annotating the noncoding varants to flag the ones that are most likely influencing gene expression. Regulome DB gives likelihood that variant outside coding region is involved in regulation. Package haploR serves as API. We developed script to retrieve probability that variants in VCF file is involved in regulattion.<br>
+Due to the outage of the server, developed scripts for RegulomeDB are currently not accessible.<br>
