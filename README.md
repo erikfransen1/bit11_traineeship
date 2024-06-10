@@ -17,8 +17,8 @@ Folder **practice Slurm** contains some exercises on the use of Slurm on the ser
 
 ### ANNOVAR
 ANNOVAR is a flexible package to annotate VCF files. This program takes an input variant file (such as a VCF file) and generate a tab-delimited output file with many columns, each representing one set of annotations. Additionally, if the input is a VCF file, the program also generates a new output VCF file with the INFO field filled with annotation information. <br>
-Setup and practice of ANNOVAR is shown in the Github repository under the folder **practiceAnnovar**. First step is downloading the appropriate database files using annotate_variation.pl. The code is shown in *installANNOVARdb.r*.
-Next, the function table_annovar.pl annotates the variants in the VCF file and draws the output in the INFO field. In the practicing run, 4 input files (3VCF and one tab-delimited file) were annotated using the default setting of table_annovar. The code is in *practice_tableAnnovar*.<br>
+Setup and practice of ANNOVAR is shown in the Github repository under the folder **practiceAnnovar**. First step is downloading the appropriate database files using annotate_variation.pl. The code is shown in *installANNOVARdb.r*. Further code from the Quick startup guide is shown in *practiceAnnovarTutorial*.
+The function table_annovar.pl annotates the variants in the VCF file and draws the output in the INFO field. In the practicing run, 4 input files (3VCF and one tab-delimited file) were annotated using the default setting of table_annovar. The code is in *practice_tableAnnovar*.<br>
 The folder practiceAnnovar in the Git repository contains 3 subfolders:
 - outputVCFfromTutorial : practice on ex1.avinput and ex2.vcf (files from ANNOVAR quick startup guise)
 - outputSample.vcf : practice on small VCF file supplied by external supervisors
