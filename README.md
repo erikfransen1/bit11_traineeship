@@ -13,7 +13,6 @@ Before actually taking off with the project, I had to learn several skills to wo
 -	ANNOVAR, software to annotate VCF files
 
 
-
 ### Slurm
 The main jobs in this project - annotations of large VCF files - were carried out on a linux server with Ubuntu version **. Jobs on the server have to be submitted by the workload manager Slurm (version **). <br>
 Slurm has three key functions to enable working on the server. First, it allocates access to resources (compute nodes) to users for some duration of time so they can perform work. Second, it provides a framework for starting, executing, and monitoring work on the set of allocated nodes. Finally, it arbitrates contention for resources by managing a queue of pending work.
@@ -45,6 +44,10 @@ biomaRt is an R package serving as an API to access ensembl. The script *practic
 The automation of the planned script will require running R scripts at the command line. This can be achieved with the command Rscript in bash. Passing on positional arguments at the commandline to the R functions inside the script is enabled by the optparse R package. Examples and code are in the folder **optparse**<br>
 The *sayHello.R* is a toy example from an R function to be ran at the command line. The scripts *display_file.R* and *example.R* were retrieved from optparse tutorials. The *printScatter.R* is a script that generates a simple scatterplot, but with the arguments from the plot() function (including adding a title, X and Y axis labels, adding a regression line, specifying th color,...) in R supplied via the optparse arguments. The script *parseVCF.R* is a script (still under construction) to parse a VCF file using optparse).<br>
 <br>
+### visualization of VCF files
+To obtain a quick overview of the INFO fields in an annotated VCF files, we explore efficient ways for visualization. Several packages are available, including the Bioconductor package plotVCF or vcfstats. This latter package plots specific metics of the VCF, with the possibility to customize the plots and focus on variants with certain filters. This latter is currently the package of choice, partly due to the outage of the server - it does not need to load the full VCF into the memory and allows working with large VCF files in the virtual box.<br>
+
+
 
 ## Development of code
 ### QC of VCF input file
