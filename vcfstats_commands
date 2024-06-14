@@ -1,13 +1,16 @@
+### vcfstats
+
+# installing via pip failed
+# have to run via docker
+
+# activate docker deamon
+sudo systemctl start docker
+
+# run docker on NA12878.vcf
+# result is written to folder outputs
+# arguments --v, -o, -f and -t are mandatory
+
 docker run \
-  -w /vcfstats \
-  -v $(pwd):/vcfstats
-  vcfstats \
-  --vcf ex2.vcf \
-  -o outputs \
-  --formula 'COUNT(1) ~ CONTIG' \
-  --title 'Number of variants on each chromosome'
-  
-    docker run \
   -w /vcfstats/workdir \
   -v $(pwd):/vcfstats/workdir \
   --rm justold/vcfstats:latest \
@@ -16,14 +19,109 @@ docker run \
   -o outputs \
   --formula 'COUNT(1) ~ CONTIG' \
   --title 'Number of variants on each chromosome'
-  
-  docker run \
+
+# use toml file with format (--config argument) 
+# specifies ggplot theme, title, formula 
+docker run \
   -w /vcfstats/workdir \
   -v $(pwd):/vcfstats/workdir \
    --rm justold/vcfstats:latest \
-  vcfstats --vcf NA12878.vcf \
-    --outdir outputs \
-     --config config.toml \
-    --ggs 'scale_x_discrete(name ="Chromosome", \
-        limits=["1","2","3","4","5","6","7","8","9","10","X"]); \
-        ylab("# Variants")'
+  vcfstats --vcf NA12878.vcf --outdir outputs --config config.toml \
+    --ggs 'scale_x_discrete(name ="Chromosome",\ limits=["1","2","3","4","5","6","7","8","9","10","X"]); ylab("# Variants")'
+    
+# no .toml but with ggplot theme
+docker run \
+  -w /vcfstats/workdir \
+  -v $(pwd):/vcfstats/workdir \
+  --rm justold/vcfstats:latest \
+  vcfstats \
+  --vcf NA12878.vcf \
+  -o outputs \
+  --formula 'COUNT(1) ~ CONTIG' \
+  --title 'Number of variants on each chromosome' \
+  --ggs 'ylab("#Variants");xlab("Chromosome")'
+  
+# only show first 5 chromosomes
+# square brackets CONTIG[1-5] not working
+# use --region argument
+# vcf must be indexed using tabix 
+# this requires first to install htslib and htslib-tools
+sudo dnf install  htslib-1.13-4.fc37.x86_64
+sudo dnf install htslib-tools-1.13-4.fc37.x86_64
+
+# input vcf must be in bgzip format
+bgzip -c NA12878.vcf > NA12878.vcf.gz
+# indexing
+tabix -p vcf NA12878.vcf.gz
+ 
+# --region argument : chromosome MUST be chr1 not 1
+ docker run \
+  -w /vcfstats/workdir \
+  -v $(pwd):/vcfstats/workdir \
+  --rm justold/vcfstats:latest \
+ vcfstats \
+    --vcf NA12878.vcf.gz \
+    --outdir outputs/ \
+    --formula 'COUNT(1) ~ CONTIG' \
+    --title 'Number of variants on each chromosome (first 3)' \
+    --ggs 'ylab("#Variants");xlab("Chromosome")'\
+    --region chr1 chr2 chr3 \
+
+    
+  
+# which type of substitution?
+ # incude all chromosomes
+  docker run \
+  -w /vcfstats/workdir \
+  -v $(pwd):/vcfstats/workdir \
+  --rm justold/vcfstats:latest \
+ vcfstats \
+    --vcf NA12878.vcf.gz \
+    --outdir outputs/ \
+    --formula 'COUNT(1, VARTYPE[snp]) ~ SUBST[A>T,A>G,A>C,T>A,T>G,T>C,G>A,G>T,G>C,C>A,C>T,C>G]' \
+    --title 'Type of substitutions on all chromosomes'\
+    --ggs 'ylab("#Variants");xlab("Type of variant")'
+  
+ # which substitution ?
+ # limited to part of teh chromosomes
+ # use vcf.gz as input to enable --region
+ # if limited to first 5 chromosomes
+ docker run \
+  -w /vcfstats/workdir \
+  -v $(pwd):/vcfstats/workdir \
+  --rm justold/vcfstats:latest \
+ vcfstats \
+    --vcf NA12878.vcf.gz \
+    --outdir outputs/ \
+    --formula 'COUNT(1, VARTYPE[snp]) ~ SUBST[A>T,A>G,A>C,T>A,T>G,T>C,G>A,G>T,G>C,C>A,C>T,C>G]' \
+    --title 'Type of substitutions of first 5 chromosomes'\
+    --region chr1 chr2 chr3 chr4 chr5
+ 
+ # only SNPS that passed QC    
+  docker run \
+  -w /vcfstats/workdir \
+  -v $(pwd):/vcfstats/workdir \
+  --rm justold/vcfstats:latest \
+ vcfstats \
+    --vcf NA12878.vcf.gz \
+    --outdir outputs/ \
+    --formula 'COUNT(1, VARTYPE[snp]) ~ SUBST[A>T,A>G,A>C,T>A,T>G,T>C,G>A,G>T,G>C,C>A,C>T,C>G]' \
+    --title 'Type of substitutions of first 5 chromosomes (passed)'\
+    --region chr1 chr2 chr3 chr4 chr5 \
+    --passed \
+    --ggs 'theme_dark();ylab("#Variants");xlab("Type of variant")'
+    
+# Alternative allele frequency
+# default (violin plot not workng)
+# figtype boxplot OK
+docker run \
+  -w /vcfstats/workdir \
+  -v $(pwd):/vcfstats/workdir \
+  --rm justold/vcfstats:latest \
+vcfstats --vcf NA12878.vcf \
+    --outdir outputs/ \
+    --formula 'AAF ~ CONTIG' \
+    --title 'Allele frequency on each chromosome (violin)' \
+    --ggs 'theme_minimal();ylim(0,1)'\
+    --figtype boxplot
+
