@@ -2,6 +2,13 @@
 
 # installing via pip failed
 # have to run via docker
+# install docker
+sudo apt-get update
+apt-cache policy docker-ce
+sudo apt-get install -y docker-ce
+sudo apt-get install docker-compose
+sudo apt-get upgrade
+
 
 # activate docker deamon
 sudo systemctl start docker
@@ -10,9 +17,9 @@ sudo systemctl start docker
 # result is written to folder outputs
 # arguments --v, -o, -f and -t are mandatory
 
-docker run \
+sudo docker run \
   -w /vcfstats/workdir \
-  -v $(pwd):/vcfstats/workdir \
+  -v "$(pwd)":/vcfstats/workdir \
   --rm justold/vcfstats:latest \
   vcfstats \
   --vcf NA12878.vcf \
@@ -22,17 +29,17 @@ docker run \
 
 # use toml file with format (--config argument) 
 # specifies ggplot theme, title, formula 
-docker run \
+sudo docker run \
   -w /vcfstats/workdir \
-  -v $(pwd):/vcfstats/workdir \
+  -v "$(pwd)":/vcfstats/workdir \
    --rm justold/vcfstats:latest \
   vcfstats --vcf NA12878.vcf --outdir outputs --config config.toml \
     --ggs 'scale_x_discrete(name ="Chromosome",\ limits=["1","2","3","4","5","6","7","8","9","10","X"]); ylab("# Variants")'
     
 # no .toml but with ggplot theme
-docker run \
+sudo docker run \
   -w /vcfstats/workdir \
-  -v $(pwd):/vcfstats/workdir \
+  -v "$(pwd)":/vcfstats/workdir \
   --rm justold/vcfstats:latest \
   vcfstats \
   --vcf NA12878.vcf \
@@ -50,14 +57,15 @@ sudo dnf install  htslib-1.13-4.fc37.x86_64
 sudo dnf install htslib-tools-1.13-4.fc37.x86_64
 
 # input vcf must be in bgzip format
+sudo apt install tabix
 bgzip -c NA12878.vcf > NA12878.vcf.gz
 # indexing
 tabix -p vcf NA12878.vcf.gz
  
 # --region argument : chromosome MUST be chr1 not 1
- docker run \
+ sudo docker run \
   -w /vcfstats/workdir \
-  -v $(pwd):/vcfstats/workdir \
+  -v "$(pwd)":/vcfstats/workdir \
   --rm justold/vcfstats:latest \
  vcfstats \
     --vcf NA12878.vcf.gz \
@@ -65,15 +73,15 @@ tabix -p vcf NA12878.vcf.gz
     --formula 'COUNT(1) ~ CONTIG' \
     --title 'Number of variants on each chromosome (first 3)' \
     --ggs 'ylab("#Variants");xlab("Chromosome")'\
-    --region chr1 chr2 chr3 \
+    --region chr1 chr2 chr3 
 
     
   
 # which type of substitution?
  # incude all chromosomes
-  docker run \
+  sudo docker run \
   -w /vcfstats/workdir \
-  -v $(pwd):/vcfstats/workdir \
+  -v "$(pwd)":/vcfstats/workdir \
   --rm justold/vcfstats:latest \
  vcfstats \
     --vcf NA12878.vcf.gz \
@@ -86,9 +94,9 @@ tabix -p vcf NA12878.vcf.gz
  # limited to part of teh chromosomes
  # use vcf.gz as input to enable --region
  # if limited to first 5 chromosomes
- docker run \
+ sudo docker run \
   -w /vcfstats/workdir \
-  -v $(pwd):/vcfstats/workdir \
+  -v "$(pwd)":/vcfstats/workdir \
   --rm justold/vcfstats:latest \
  vcfstats \
     --vcf NA12878.vcf.gz \
@@ -98,9 +106,9 @@ tabix -p vcf NA12878.vcf.gz
     --region chr1 chr2 chr3 chr4 chr5
  
  # only SNPS that passed QC    
-  docker run \
+  sudo docker run \
   -w /vcfstats/workdir \
-  -v $(pwd):/vcfstats/workdir \
+  -v "$(pwd)":/vcfstats/workdir \
   --rm justold/vcfstats:latest \
  vcfstats \
     --vcf NA12878.vcf.gz \
@@ -114,9 +122,9 @@ tabix -p vcf NA12878.vcf.gz
 # Alternative allele frequency
 # default (violin plot not workng)
 # figtype boxplot OK
-docker run \
+sudo docker run \
   -w /vcfstats/workdir \
-  -v $(pwd):/vcfstats/workdir \
+  -v "$(pwd)":/vcfstats/workdir \
   --rm justold/vcfstats:latest \
 vcfstats --vcf NA12878.vcf \
     --outdir outputs/ \
@@ -125,3 +133,14 @@ vcfstats --vcf NA12878.vcf \
     --ggs 'theme_minimal();ylim(0,1)'\
     --figtype boxplot
 
+#density plot
+sudo docker run \
+  -w /vcfstats/workdir \
+  -v "$(pwd)":/vcfstats/workdir \
+  --rm justold/vcfstats:latest \
+vcfstats --vcf NA12878.vcf.gz \
+    --outdir outputs/ \
+    --formula 'AAF ~ CONTIG' \
+    --title 'Allele frequency on chromosome 1,2' \
+    --figtype density \
+     --region chr1 chr2 
