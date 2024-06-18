@@ -14,7 +14,7 @@ sudo apt-get upgrade
 sudo systemctl start docker
 
 # run docker on NA12878.vcf
-# result is written to folder outputs
+# result is Rwritten to folder outputs
 # arguments --v, -o, -f and -t are mandatory
 
 sudo docker run \
