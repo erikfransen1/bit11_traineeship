@@ -12,7 +12,7 @@ annotate_variation.pl -buildver hg19 -downdb -webfrom annovar avsnp147 humandb/
 
 annotate_variation.pl -buildver hg19 -downdb -webfrom annovar dbnsfp30a humandb/
 
-# add old versions of databases
+## add old versions of databases
 # refgene 2021
 annotate_variation.pl -buildver hg18 -downdb -webfrom annovar refGene humandb/
 
