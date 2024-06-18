@@ -8,4 +8,8 @@ pwd
 # subVCF are in folder ownVCF
 # databases are in folder annovar/humandb
 
-perl table_annovar.pl ownVCF/subVCF1 annovar/humandb -buildver hg19 -out myanno -remove -protocol refGene,cytoBand,exac03,avsnp147,dbnsfp30a -operation gx,r,f,f,f -nastring . -csvout -polish -xref example/gene_xref.txt
+# annotate using old and new refGene
+table_annovar.pl ownVCF/subVCF1 annovar/humandb -buildver hg19 -out outputAnnovar/myNewAnno -remove -protocol refGene -operation g -nastring . -csvout -polish 
+table_annovar.pl ownVCF/subVCF1 annovar/humandb -buildver hg18 -out outputAnnovar/myOldAnno -remove -protocol refGene -operation g -nastring . -csvout -polish 
+
+
