@@ -7,7 +7,7 @@ library(tidyverse)
 library(readr)
 
 # store all VCF into 1 folder
-setwd("../ownVCF")
+setwd("home/efransen/ownVCF")
 
 # read in VCF using vcfR
 myVCF<-read.vcfR("NA12878.vcf")
@@ -37,12 +37,13 @@ setwd("../ownVCF")
 bodyVCF<-read.table("bodyVCF",sep="\t")
 nrow<-dim(bodyVCF)[1]
 
-# compose first VCF
-# generate random 10,000 index numbers to pick rows from bodyVCF
-# 
+# compose sub VCF
+# generate random 100,000 index numbers to pick rows from bodyVCF
+# make bash command for the 10 subVCFs
+
 commands<-rep(NA,10)
 for(i in 1:10){
-    randomRows<-sample(1:nrow,10000,replace=FALSE)
+    randomRows<-sample(1:nrow,100000,replace=FALSE)
     bodySub<-bodyVCF[randomRows,]
     write.table(bodySub,paste0("body",i),row.names = FALSE, col.names = FALSE, quote=FALSE,sep="\t")
     commands[i]<-paste0("cat metaHeader body",i," > subVCF",i,"\n")
