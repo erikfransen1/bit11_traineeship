@@ -8,8 +8,7 @@ pwd
 # subVCF are in folder ownVCF
 # databases are in folder annovar/humandb
 
-# annotate using old and new refGene
-table_annovar.pl ownVCF/subVCF1 annovar/humandb -buildver hg19 -out outputAnnovar/myNewAnno -remove -protocol refGene -operation g -nastring . -csvout -polish 
-table_annovar.pl ownVCF/subVCF1 annovar/humandb -buildver hg18 -out outputAnnovar/myOldAnno -remove -protocol refGene -operation g -nastring . -csvout -polish 
 
-
+# annotate using old and new SIFT/Polyphen
+table_annovar.pl ownVCF/subVCF1 annovar/humandb/ -buildver hg19 -out outputAnnovar/myNewanno -remove -protocol dbnsfp30a -operation f -nastring . -csvout -polish
+table_annovar.pl ownVCF/subVCF1 annovar/humandb/ -buildver hg19 -out outputAnnovar/myOldanno -remove -protocol ljb26_all -operation f -nastring . -csvout -polish
