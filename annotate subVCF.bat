@@ -13,8 +13,14 @@ pwd
 table_annovar.pl ownVCF/subVCF1 annovar/humandb/ -buildver hg19 -out outputAnnovar/myNewanno -remove -protocol dbnsfp30a -operation f -nastring . -polish
 table_annovar.pl ownVCF/subVCF1 annovar/humandb/ -buildver hg19 -out outputAnnovar/myOldanno -remove -protocol ljb26_all -operation f -nastring . -polish
 
-for file in subVCF1 subVCF2 subVCF3
+for file in subVCF1 subVCF2 subVCF3 subVCF4
     do
         table_annovar.pl ownVCF/$file annovar/humandb/ -buildver hg19 -out outputAnnovar/myNewanno$file -remove -protocol dbnsfp30a -operation f -nastring . -polish
         table_annovar.pl ownVCF/$file annovar/humandb/ -buildver hg19 -out outputAnnovar/myOldanno$file -remove -protocol ljb26_all -operation f -nastring . -polish
     done    
+
+# generate folders to store old resp. new annotations
+mkdir annotHg19_old
+mkdir annotHg19_new
+mv outputAnnovar/myNewannosub*hg19* annotHg19_new/
+mv outputAnnovar/myOldannosub*hg19* annotHg19_old/
