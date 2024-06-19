@@ -10,5 +10,5 @@ pwd
 
 
 # annotate using old and new SIFT/Polyphen
-table_annovar.pl ownVCF/subVCF1 annovar/humandb/ -buildver hg19 -out outputAnnovar/myNewanno -remove -protocol dbnsfp30a -operation f -nastring . -csvout -polish
-table_annovar.pl ownVCF/subVCF1 annovar/humandb/ -buildver hg19 -out outputAnnovar/myOldanno -remove -protocol ljb26_all -operation f -nastring . -csvout -polish
+table_annovar.pl ownVCF/subVCF1 annovar/humandb/ -buildver hg19 -out outputAnnovar/myNewanno -remove -protocol dbnsfp30a -operation f -nastring . -polish
+table_annovar.pl ownVCF/subVCF1 annovar/humandb/ -buildver hg19 -out outputAnnovar/myOldanno -remove -protocol ljb26_all -operation f -nastring . -polish
