@@ -10,7 +10,7 @@ list.files(getwd())
 library(vcfR)
 library(tidyverse)
 
-#read in annotated files as csv
+#read in annotated files as tab-delimited (NOT csv!!)
 newVCF<-read.table("myNewanno.hg19_multianno.txt",header=T,sep="\t",fill=T,na.strings = ".")
 oldVCF<-read.table("myOldanno.hg19_multianno.txt",header=T,sep="\t",fill=T,na.strings = ".") 
 # nolint
