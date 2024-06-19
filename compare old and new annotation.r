@@ -19,22 +19,37 @@ oldVCF<-read.table("myOldanno.hg19_multianno.txt",header=T,sep="\t",fill=T,na.st
 # search for common info fields
 commonCOLS<-intersect(names(newVCF),names(oldVCF))
 commonINFO<-commonCOLS[6:length(commonCOLS)]
+nFields<-length(commonINFO)
+hasAnnot<-rep(NA,nFields)
+outList<-vector("list",nFields)
+names(outList)<-commonINFO
 
-i<-1
-grepCol<-grep(commonINFO[i],names(newVCF))
-tmpNew<-newVCF[,c(1:5,grepCol)]
-names(tmpNew)[6]<-"new"
+#loop over info common fields (within one subVCF)
+for(i in 1:nFields){
 
-grepCol<-grep(commonINFO[i],names(oldVCF))
-tmpOld<-oldVCF[,c(1:5,grepCol)]
-names(tmpOld)[6]<-"old"
+    # grep common info fields in old and new annotation files
+    grepCol<-grep(commonINFO[i],names(newVCF))
+    tmpNew<-newVCF[is.na(newVCF$Chr)==FALSE,c(1:5,grepCol)]
+    names(tmpNew)[6]<-"new"
 
-# if no annotation --> no merge and move to next column
-if(sum(is.na(tmpOld$old), is.na(tmpNew$new))==dim(tmpNew)[1]+dim(tmpOld)[1]){
-    next
+    grepCol<-grep(commonINFO[i],names(oldVCF))
+    tmpOld<-oldVCF[is.na(oldVCF$Chr),c(1:5,grepCol)]
+    names(tmpOld)[6]<-"old"
+
+    # detect if there is any annotation in the VCF
+    if(sum(is.na(tmpOld$old), is.na(tmpNew$new))==(dim(tmpNew)[1]+dim(tmpOld)[1])){
+        hasAnnot[i]<-FALSE
+    }
+    else{
+        hasAnnot[i]<-TRUE
+        oldNew<-merge(tmpOld,tmpNew)
+        outList[[i]]<-oldNew[oldNew$old!=oldNew$new,]
+
+    }
+
 }
 
 #next steps : only of there is annotation in at leas 1 of the annotations
-oldNew<-merge(tmpOld,tmpNew)
+
 
 
