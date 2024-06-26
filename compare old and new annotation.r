@@ -67,5 +67,4 @@ for(j in 1:length(oldAnnot)){
 
 #next steps : only of there is annotation in at leas 1 of the annotations
 
-
-
+outList_nonzero<-unlist(outList)
