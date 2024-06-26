@@ -1,7 +1,5 @@
 ###compare old and new annotation
-
-#refgene hg18 vs hg19
-
+# using input from bash script with positional arguments
 getwd()
 [1] "/home/efransen/outputAnnovar"
 
@@ -20,7 +18,6 @@ names(outList)<-oldAnnot
 
 # outer loop : over VCFs
 for(j in 1:length(oldAnnot)){
-    j<-1
     #read in annotated files as tab-delimited (NOT csv!!)
     newVCF<-read.table(paste0("annotHg19_new/",newAnnot[j]),header=T,sep="\t",fill=T,na.strings = ".")
     oldVCF<-read.table(paste0("annotHg19_old/",oldAnnot[j]),header=T,sep="\t",fill=T,na.strings = ".")
@@ -63,7 +60,6 @@ for(j in 1:length(oldAnnot)){
     }
 
 }
-
 
 #next steps : only of there is annotation in at leas 1 of the annotations
 
