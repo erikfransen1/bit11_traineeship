@@ -14,14 +14,22 @@
 # annotate using old and new SIFT/Polyphen
 # write annotated VCF to subfolder myNewAnno resp. myOldAnno 
 
+# user specifies which db to compare using positional arguments
+# new = dbnsfp30a
+# old = ljb26_all
+
+ oldannot=$1
+ newannot=$2
 
 myDir=$(find /home/efransen/ownVCF/allsubVCF/ -type f -iname "*")
+
+cd /home/efransen
  
 for file in $myDir; do
         echo "$file"
-        filename=basename $file
-        table_annovar.pl $file annovar/humandb/ -buildver hg19 -out outputAnnovar/myNewAnno$filename -remove -protocol dbnsfp30a -operation f -nastring . -polish
-        table_annovar.pl $file annovar/humandb/ -buildver hg19 -out outputAnnovar/myOldAnno$filename -remove -protocol ljb26_all -operation f -nastring . -polish
+        filename=$(basename $file)
+        table_annovar.pl $file annovar/humandb/ -buildver hg19 -out outputAnnovar/myNewAnno$filename -remove -protocol $newannot -operation f -nastring . -polish
+        table_annovar.pl $file annovar/humandb/ -buildver hg19 -out outputAnnovar/myOldAnno$filename -remove -protocol $oldannot -operation f -nastring . -polish
     done
 
 
