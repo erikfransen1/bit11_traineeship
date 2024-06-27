@@ -36,3 +36,6 @@ mkdir annotHg19_new
 mv outputAnnovar/myNewAnnosub*hg19* annotHg19_new/
 mv outputAnnovar/myOldAnnosub*hg19* annotHg19_old/
 
+
+
+
