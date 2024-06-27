@@ -32,9 +32,8 @@ for file in $myDir; do
 
 mkdir -p annotHg19_old
 mkdir -p annotHg19_new
-mv outputAnnovar/myNewAnnosub*hg19* annotHg19_new/
-mv outputAnnovar/myOldAnnosub*hg19* annotHg19_old/
-
+mv outputAnnovar/myNewAnnosub* annotHg19_new/
+mv outputAnnovar/myOldAnnosub* annotHg19_old/
 
 
 
