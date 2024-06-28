@@ -67,3 +67,13 @@ Upon practicing with the VCF files using vcfR, we encountered an error message a
 ### Regulome DB
 Old annotation focuses on coding variants wand the predicion of their effect on protein structire. However, most GWAS hits are noncoding variants in intergenic regions, for which some regulatory effect is suspected. Since the purpose of this project is re-annotation of old VCF files with newly developed annotation, I wanted to explore the possibilities of annotating the noncoding varants to flag the ones that are most likely influencing gene expression. Regulome DB gives likelihood that variant outside coding region is involved in regulation. Package haploR serves as API. We developed script to retrieve probability that variants in VCF file is involved in regulattion.<br>
 Due to the outage of the server, developed scripts for RegulomeDB are currently not accessible.<br>
+
+
+## Combining practice code and automation
+### Annotate multiple VCFs with database of choice
+Due to the outage of the server and the scarcity of online VCF files, code was developed on a few available VCF. One large VCF was randomly split into 10 equal files (hereafter referred to as 'subVCF') of 100,000 lines each using the splitVCF_wsl.R script. The meta-part of the original VCF was preserved and used in all subVCF files. 
+These 10 resulting VCF files were used to create an annotation script that compares annotation between differnt databases, automatically running through all imput subVCFs. This implied several levels of automation:
+- automatically running through all 10 files using a for-loop in bash
+- using positional arguments to :
+    - specify what databases (or versions thereof) were to be compared
+    - specify the output directory to store the VCF with the old resp. new annotations 
