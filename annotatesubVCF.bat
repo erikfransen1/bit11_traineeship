@@ -43,7 +43,7 @@ for file in $myDir; do
 # serving as input for R script to find differences
 # outputfolder = part of positional argument
 
-mkdir -p $oldannotfolder
+mkdir -p $oldannotFolder
 mkdir -p $newannotFolder
 mv outputAnnovar/myOldAnnosub* $oldannotFolder/
 mv outputAnnovar/myNewAnnosub* $newannotFolder/
