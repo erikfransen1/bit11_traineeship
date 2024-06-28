@@ -32,8 +32,8 @@ cd /home/efransen
 for file in $myDir; do
         echo "$file"
         filename=$(basename $file)
-        table_annovar.pl $file annovar/humandb/ -buildver hg19 -out outputAnnovar/myNewAnno$filename -remove -protocol $newannot -operation f -nastring . -polish
-        table_annovar.pl $file annovar/humandb/ -buildver hg19 -out outputAnnovar/myOldAnno$filename -remove -protocol $oldannot -operation f -nastring . -polish
+        table_annovar.pl $file annovar/humandb/ -buildver hg19 -out outputAnnovar/myNewAnno$filename -remove -protocol $newannot -operation f -nastring . -polish -vcfinput
+        table_annovar.pl $file annovar/humandb/ -buildver hg19 -out outputAnnovar/myOldAnno$filename -remove -protocol $oldannot -operation f -nastring . -polish -vcfinput
     done
 
 
