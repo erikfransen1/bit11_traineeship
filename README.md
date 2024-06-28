@@ -70,10 +70,15 @@ Due to the outage of the server, developed scripts for RegulomeDB are currently 
 
 
 ## Combining practice code and automation
-### Annotate multiple VCFs with database of choice
+### Annotate multiple VCFs with database of choice (annotPositArg.sh)
 Due to the outage of the server and the scarcity of online VCF files, code was developed on a few available VCF. One large VCF was randomly split into 10 equal files (hereafter referred to as 'subVCF') of 100,000 lines each using the splitVCF_wsl.R script. The meta-part of the original VCF was preserved and used in all subVCF files. 
 These 10 resulting VCF files were used to create an annotation script that compares annotation between differnt databases, automatically running through all imput subVCFs. This implied several levels of automation:
 - automatically running through all 10 files using a for-loop in bash
 - using positional arguments to :
     - specify what databases (or versions thereof) were to be compared
     - specify the output directory to store the VCF with the old resp. new annotations 
+The script needs additional positional arguments to e.g. specify the directory where the input VCFs are located.
+Resulting annotated VCF files (stored in the specified folders) serve as input for an R script that compares old and new annotation.
+
+### Comparing old and new annotation
+This R script reads in the output from the previous (annotPositArg.sh) script, reading in the VCF with old and new annotations. For each VCF, the script first seaches for INFO fields that are common to the old and new annotations, and subsequently loops over all common INFO fields, saving the differentially annotated fields in an output table. 
