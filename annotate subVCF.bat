@@ -18,8 +18,12 @@
 # new = dbnsfp30a
 # old = ljb26_all
 
+# !/bin/bash
+
  oldannot=$1
  newannot=$2
+ oldannotFolder=$3
+ newannotFolder=$4
 
 myDir=$(find /home/efransen/ownVCF/allsubVCF/ -type f -iname "*")
 
@@ -37,11 +41,11 @@ for file in $myDir; do
 # if directory does not exist yet (-p option)
 # move old and new annotation to separate folders, 
 # serving as input for R script to find differences
+# outputfolder = part of positional argument
 
-mkdir -p annotHg19_old
-mkdir -p annotHg19_new
-mv outputAnnovar/myNewAnnosub* annotHg19_new/
-mv outputAnnovar/myOldAnnosub* annotHg19_old/
-
+mkdir -p $oldannotfolder
+mkdir -p $newannotFolder
+mv outputAnnovar/myOldAnnosub* $oldannotFolder/
+mv outputAnnovar/myNewAnnosub* $newannotFolder/
 
 
