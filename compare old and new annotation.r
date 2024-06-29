@@ -9,26 +9,33 @@ library(vcfR)
 library(tidyverse)
 
 #old and new annotations are in 2 separate folders
-oldAnnot<-list.files(paste0(getwd(),"/annotHg19_old"))
-newAnnot<-list.files(paste0(getwd(),"/annotHg19_new"))
+oldAnnot<-list.files(paste0(getwd(),"/oldAnnot3"))
+newAnnot<-list.files(paste0(getwd(),"/newAnnot3"))
+
+# need the txt files, not .vcf or .avinput
+whatfiles<-grep("\\.txt",oldAnnot)
+oldAnnot<-oldAnnot[whatfiles]
+whatfiles<-grep("\\.txt",newAnnot)
+newAnnot<-newAnnot[whatfiles]
 
 # vector of sites with diff annotations in old vs new
 diffAnnot<-NULL
+outList<-vector("list", length(oldAnnot))
+filename<-substr(oldAnnot,10,16)
+names(outList)<-filename
+
 
 # outer loop : over VCFs
 for(j in 1:length(oldAnnot)){
     #read in annotated files as tab-delimited (NOT csv!!)
-    newVCF<-read.table(paste0("annotHg19_new/",newAnnot[j]),header=T,sep="\t",fill=T,na.strings = ".")
-    oldVCF<-read.table(paste0("annotHg19_old/",oldAnnot[j]),header=T,sep="\t",fill=T,na.strings = ".")
+    newVCF<-read.table(paste0("newAnnot3/",newAnnot[j]),header=T,sep="\t",fill=T,na.strings = ".")
+    oldVCF<-read.table(paste0("oldAnnot3/",oldAnnot[j]),header=T,sep="\t",fill=T,na.strings = ".")
    
-   # positive control
-   #in each subVCF, change the first (SIFT) annotation
-   # will be on different chr in each subVCF
-    newVCF[1,6]<-"testvalue"
-
     # not all fields are same
     # search for common info fields
     commonCOLS<-intersect(names(newVCF),names(oldVCF))
+    # remove columns with otherinfo
+    commonCOLS<-commonCOLS[grepl("Otherinfo",commonCOLS)==FALSE]
     commonINFO<-commonCOLS[6:length(commonCOLS)]
     nFields<-length(commonINFO)
     hasAnnot<-rep(NA,nFields)
@@ -60,11 +67,16 @@ for(j in 1:length(oldAnnot)){
             oldNew<-oldNew %>% 
                 filter(!is.na(old)|!is.na(new))%>%
                 mutate(old=replace_na(old,""),
-                        new=replace_na(new,""))           
-        diffAnnot<-as.data.frame(rbind(diffAnnot,oldNew[oldNew$old!=oldNew$new,]))
-        }
+                        new=replace_na(new,""))       
+        oldNew$field<-commonINFO[i]
+        oldNew$VCF<-filename[j]   
         
+        # accumulate all rown with differential annotation
+        diffAnnot<-as.data.frame(rbind(diffAnnot,oldNew[oldNew$old!=oldNew$new,]))
 
+        # table with differential annotations per VCF
+        outList[[j]][[i]]<-oldNew[oldNew$old!=oldNew$new,]
+        }
     }
 
 
