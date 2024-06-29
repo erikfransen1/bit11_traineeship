@@ -97,13 +97,14 @@ geneOfInt<-"TTN"
 selection<-diffAnnot%>%
     filter(Gene.refGene==geneOfInt)
 
+pdf("output.pdf")
 if(dim(selection)[1]>0){
-    ggplot(selection,aes(x=old,y=new))+
+    ggplot(selection,aes(x=old,y=new,col=Func.refGene))+
         geom_point()+
         ggtitle("Gene = ",geneOfInt)+
-        facet_wrap(~field)
+        facet_wrap(~field,scales="free")
 }
-
+dev.off()
 
 maxAnnot<-max(table(diffAnnot$Gene.refGene))
 table(diffAnnot$Gene.refGene)[table(diffAnnot$Gene.refGene)==maxAnnot]
