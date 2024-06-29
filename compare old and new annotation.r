@@ -80,6 +80,11 @@ for(j in 1:length(oldAnnot)){
     }
 
 
-#next steps : only of there is annotation in at leas 1 of the annotations
+# visualize differential expression
+perVCF<-diffAnnot%>%
+    filter(VCF=="subVCF1")
+ggplot(perVCF,aes(x=Chr,fill=field))+
+    geom_bar()+
+    xlab("")+
+    theme(axis.text.x = element_text(angle = 90))
 
-outList_nonzero<-unlist(outList)
