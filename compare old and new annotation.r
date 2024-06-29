@@ -35,8 +35,9 @@ for(j in 1:length(oldAnnot)){
     # search for common info fields
     commonCOLS<-intersect(names(newVCF),names(oldVCF))
     # remove columns with otherinfo
+    #only keep refGene annot on funct.refGene and Gene.refGene
     commonCOLS<-commonCOLS[grepl("Otherinfo",commonCOLS)==FALSE]
-    commonINFO<-commonCOLS[6:length(commonCOLS)]
+    commonINFO<-commonCOLS[11:length(commonCOLS)]
     nFields<-length(commonINFO)
     hasAnnot<-rep(NA,nFields)
 
@@ -50,20 +51,20 @@ for(j in 1:length(oldAnnot)){
 
         # grep common info fields in old and new annotation files
         grepCol<-grep(commonINFO[i],names(newVCF))
-        tmpNew<-newVCF[,c(1:5,grepCol)]
+        tmpNew<-newVCF[,c(1:7,grepCol)]
         tmpNew<-tmpNew %>% 
             filter(if_all(c(Chr,Start, Ref, Alt), ~!is.na(.)))
-        names(tmpNew)[6]<-"new"
+        names(tmpNew)[8]<-"new"
         tmpNew$new<-as.character(tmpNew$new)
 
         grepCol<-grep(commonINFO[i],names(oldVCF))
-        tmpOld<-oldVCF[,c(1:5,grepCol)]
+        tmpOld<-oldVCF[,c(1:7,grepCol)]
         tmpOld<-tmpOld %>% 
             filter(if_all(c(Chr,Start, Ref, Alt), ~!is.na(.)))
-        names(tmpOld)[6]<-"old"
+        names(tmpOld)[8]<-"old"
         tmpOld$old<-as.character(tmpOld$old)
 
-        oldNew<-merge(tmpOld,tmpNew,by=c("Chr","Start","Ref","Alt"))
+        oldNew<-merge(tmpOld,tmpNew,by=c("Chr","Start","Ref","Alt","Func.refGene","Gene.refGene"))
             oldNew<-oldNew %>% 
                 filter(!is.na(old)|!is.na(new))%>%
                 mutate(old=replace_na(old,""),
@@ -81,10 +82,29 @@ for(j in 1:length(oldAnnot)){
 
 
 # visualize differential expression
-perVCF<-diffAnnot%>%
-    filter(VCF=="subVCF1")
-ggplot(perVCF,aes(x=Chr,fill=field))+
-    geom_bar()+
-    xlab("")+
-    theme(axis.text.x = element_text(angle = 90))
+allGenes<-unique(diffAnnot$Gene.refGene)
+# 3979 different genes with at leas 1 diff annotation
 
+perVCF<-diffAnnot%>%
+    filter(VCF=="subVCF1")%>%
+    ggplot(aes(x=field,fill=Func.refGene))+
+        geom_bar()+
+        xlab("")+
+        theme(axis.text.x = element_text(angle = 90))
+
+geneOfInt<-"TTN"
+
+selection<-diffAnnot%>%
+    filter(Gene.refGene==geneOfInt)
+
+if(dim(selection)[1]>0){
+    ggplot(selection,aes(x=old,y=new))+
+        geom_point()+
+        ggtitle("Gene = ",geneOfInt)+
+        facet_wrap(~field)
+}
+
+
+maxAnnot<-max(table(diffAnnot$Gene.refGene))
+table(diffAnnot$Gene.refGene)[table(diffAnnot$Gene.refGene)==maxAnnot]
+# TTN
