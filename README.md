@@ -82,3 +82,4 @@ Resulting annotated VCF files (stored in the specified folders) serve as input f
 
 ### Comparing old and new annotation
 This R script reads in the output from the previous (annotPositArg.sh) script, for each VCF reading in the old and new annotations respectively. Then the script seaches for INFO fields that are common to the old and new annotations, and subsequently loops over all common INFO fields, saving the differentially annotated fields in an output table. 
+Starting from the table with differential annotations, plots are generated to visualize the annotation on the level of the VCF file or on the level of a gene of interest.
