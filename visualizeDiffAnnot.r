@@ -1,10 +1,18 @@
 
 # visualize differential annotation
+# load workspace from previous script
+load("~/diffAnnot.rda")
+# using diffAnnot df from previous R script
+
 allGenes<-unique(diffAnnot$Gene.refGene)
 # 3979 different genes with at leas 1 diff annotation
+# gene with most differential annotations
+tail(sort(table(diffAnnot$Gene.refGene)),10)
+
+myVCF<-"subVCF1"
 
 # function to draw graph from gene or VCF of interest
-plotDiffAnnot<-function(perVCF=FALSE,perGene=TRUE,geneOfInt="myGene",myVCF="myVCF",outputGraph="annotGraph.pdf"){
+plotDiffAnnot<-function(perVCF=FALSE,perGene=FALSE,geneOfInt="myGene",myVCF="myVCF",outputGraph="annotGraph.pdf"){
     
     if(perVCF==TRUE){
         diffAnnot%>%
