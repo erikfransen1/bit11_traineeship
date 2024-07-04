@@ -1,7 +1,5 @@
 ###compare old and new annotation
 # using input from bash script with positional arguments
-getwd()
-[1] "/home/efransen/outputAnnovar"
 
 setwd("/home/efransen")
 
