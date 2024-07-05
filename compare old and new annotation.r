@@ -17,7 +17,8 @@ whatfiles<-grep("\\.txt",newAnnot)
 newAnnot<-newAnnot[whatfiles]
 
 # vector of sites with diff annotations in old vs new
-diffAnnot<-NULL
+diffAnnot_char<-NULL
+diffAnnot_num<-NULL
 outList<-vector("list", length(oldAnnot))
 filename<-substr(oldAnnot,10,16)
 names(outList)<-filename
@@ -65,15 +66,27 @@ for(j in 1:length(oldAnnot)){
         oldNew<-merge(tmpOld,tmpNew,by=c("Chr","Start","Ref","Alt","Func.refGene","Gene.refGene"))
             oldNew<-oldNew %>% 
                 filter(!is.na(old)|!is.na(new))%>%
-                mutate(old=replace_na(old,""),
-                        new=replace_na(new,""))       
+   
         oldNew$field<-commonINFO[i]
         oldNew$VCF<-filename[j]   
         
         # accumulate all rown with differential annotation
-        diffAnnot<-as.data.frame(rbind(diffAnnot,oldNew[oldNew$old!=oldNew$new,]))
-
-        # table with differential annotations per VCF
-        # outList[[j]][[i]]<-oldNew[oldNew$old!=oldNew$new,]
+        # split for numeric and character annotation
+        if(is.numeric(oldNew$new)){
+        diffAnnot_num<-as.data.frame(rbind(diffAnnot_num,oldNew[oldNew$old!=oldNew$new,]))
+        }else{
+        diffAnnot_char<-as.data.frame(rbind(diffAnnot_char,oldNew[oldNew$old!=oldNew$new,]))
+        }
+        
         }
     }
+
+diffAnnot_num<-diffAnnot_num%>%
+    filter(if_all(c(Chr,Start, Ref, Alt), ~!is.na(.)))
+
+diffAnnot_char<-diffAnnot_char%>%
+    filter(if_all(c(Chr,Start, Ref, Alt), ~!is.na(.)))
+
+
+save(diffAnnot_char,file="~/diffAnnot_char.rda")
+save(diffAnnot_num,file="~/diffAnnot_num.rda")

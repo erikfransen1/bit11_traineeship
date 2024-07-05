@@ -9,6 +9,11 @@ allGenes<-unique(diffAnnot$Gene.refGene)
 # gene with most differential annotations
 tail(sort(table(diffAnnot$Gene.refGene)),10)
 
+# some annotations are continuous, some categorical
+# most interesting = change to D(eleterious)
+table(diffAnnot[diffAnnot$field=="SIFT_pred",]$new,diffAnnot[diffAnnot$field=="SIFT_pred",]$old)
+
+
 myVCF<-"subVCF1"
 
 # function to draw graph from gene or VCF of interest
