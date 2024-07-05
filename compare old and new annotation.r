@@ -66,8 +66,12 @@ for(j in 1:length(oldAnnot)){
         # split for numeric and character annotation
         if(is.numeric(oldNew$new)){
             diffAnnot_num<-as.data.frame(rbind(diffAnnot_num,oldNew[oldNew$old!=oldNew$new,]))
+            diffAnnot_num<-as.data.frame(rbind(diffAnnot_num,oldNew[is.na(oldNew$old)&is.na(oldNew$new)==FALSE,]))
+            diffAnnot_num<-as.data.frame(rbind(diffAnnot_num,oldNew[is.na(oldNew$new)&is.na(oldNew$old)==FALSE,]))
         }else{
             diffAnnot_char<-as.data.frame(rbind(diffAnnot_char,oldNew[oldNew$old!=oldNew$new,]))
+            diffAnnot_char<-as.data.frame(rbind(diffAnnot_char,oldNew[is.na(oldNew$old)&is.na(oldNew$new)==FALSE,]))
+            diffAnnot_char<-as.data.frame(rbind(diffAnnot_char,oldNew[is.na(oldNew$new)&is.na(oldNew$old)==FALSE,]))
         }
         
         }
