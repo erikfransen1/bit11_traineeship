@@ -19,9 +19,7 @@ newAnnot<-newAnnot[whatfiles]
 # vector of sites with diff annotations in old vs new
 diffAnnot_char<-NULL
 diffAnnot_num<-NULL
-outList<-vector("list", length(oldAnnot))
 filename<-substr(oldAnnot,10,16)
-names(outList)<-filename
 
 
 # outer loop : over VCFs
@@ -38,12 +36,7 @@ for(j in 1:length(oldAnnot)){
     commonCOLS<-commonCOLS[grepl("Otherinfo",commonCOLS)==FALSE]
     commonINFO<-commonCOLS[11:length(commonCOLS)]
     nFields<-length(commonINFO)
-    hasAnnot<-rep(NA,nFields)
-
-    #within outList (per VCF) generate inner list by common INFO field
-    outList[[j]]<-vector("list",nFields)
-    names(outList[[j]])<-commonINFO
-
+    
 
     #loop over info common fields (within one subVCF)
     for(i in 1:nFields){
@@ -54,18 +47,17 @@ for(j in 1:length(oldAnnot)){
         tmpNew<-tmpNew %>% 
             filter(if_all(c(Chr,Start, Ref, Alt), ~!is.na(.)))
         names(tmpNew)[8]<-"new"
-        tmpNew$new<-as.character(tmpNew$new)
 
         grepCol<-grep(commonINFO[i],names(oldVCF))
         tmpOld<-oldVCF[,c(1:7,grepCol)]
         tmpOld<-tmpOld %>% 
             filter(if_all(c(Chr,Start, Ref, Alt), ~!is.na(.)))
         names(tmpOld)[8]<-"old"
-        tmpOld$old<-as.character(tmpOld$old)
 
         oldNew<-merge(tmpOld,tmpNew,by=c("Chr","Start","Ref","Alt","Func.refGene","Gene.refGene"))
             oldNew<-oldNew %>% 
                 filter(!is.na(old)|!is.na(new))%>%
+                filter(if_all(c(Chr,Start, Ref, Alt), ~!is.na(.)))
    
         oldNew$field<-commonINFO[i]
         oldNew$VCF<-filename[j]   
@@ -73,9 +65,9 @@ for(j in 1:length(oldAnnot)){
         # accumulate all rown with differential annotation
         # split for numeric and character annotation
         if(is.numeric(oldNew$new)){
-        diffAnnot_num<-as.data.frame(rbind(diffAnnot_num,oldNew[oldNew$old!=oldNew$new,]))
+            diffAnnot_num<-as.data.frame(rbind(diffAnnot_num,oldNew[oldNew$old!=oldNew$new,]))
         }else{
-        diffAnnot_char<-as.data.frame(rbind(diffAnnot_char,oldNew[oldNew$old!=oldNew$new,]))
+            diffAnnot_char<-as.data.frame(rbind(diffAnnot_char,oldNew[oldNew$old!=oldNew$new,]))
         }
         
         }
