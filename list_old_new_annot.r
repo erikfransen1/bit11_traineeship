@@ -1,5 +1,6 @@
 ###compare old and new annotation
 # using input from bash script with positional arguments
+#detect variants with different annotation between old and new database
 
 setwd("/home/efransen")
 

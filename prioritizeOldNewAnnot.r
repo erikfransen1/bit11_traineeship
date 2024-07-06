@@ -4,13 +4,9 @@
 # load workspace from previous script
 load("~/diffAnnot_num.rda")
 load("~/diffAnnot_char.rda")
+
 # using diffAnnot df from previous R script,
 # with numeric and categorical in different files
-
-allGenes<-unique(diffAnnot$Gene.refGene)
-# 3979 different genes with at leas 1 diff annotation
-# gene with most differential annotations
-tail(sort(table(diffAnnot$Gene.refGene)),10)
 
 # some annotations are continuous, some categorical
 unique(diffAnnot_num$field)
@@ -24,6 +20,11 @@ unique(diffAnnot_char$field)
 # [4] "LRT_pred"              "MutationTaster_pred"   "MutationAssessor_pred"
 # [7] "FATHMM_pred"
 
+
+##############################
+#### Character fields ####
+##############################
+
 # character fields are more biologically relevant
 # most interesting = change to D(eleterious)
 # see https://genome.ucsc.edu/cgi-bin/hgVai
@@ -36,18 +37,17 @@ addmargins(table(diffAnnot_char[diffAnnot_char$field=="MutationTaster_pred",]$ne
 addmargins(table(diffAnnot_char[diffAnnot_char$field=="MutationAssessor_pred",]$new,diffAnnot_char[diffAnnot_char$field=="MutationAssessor_pred",]$old,useNA="always"))
 addmargins(table(diffAnnot_char[diffAnnot_char$field=="FATHMM_pred",]$new,diffAnnot_char[diffAnnot_char$field=="FATHMM_pred",]$old,useNA="always"))
 
+## Explore levels of predicted damage to functioning of the protein
 
-subSIFT<-diffAnnot_char[diffAnnot_char$field=="SIFT_pred",]
-
-interestingSIFT<-subSIFT%>%
-    filter(new=="D")%>%
-    filter(is.na(old)|old!="D")
 # SIFT : D(amaging) or T(olerated)
 # Polyphen : D(amaging); P(ossibly damaging), B(enign)
 # LRT_pred : D(eleterious), N(eutral), U(nknown)
 # MutationsTaster : A(utomatic), D(amaging), N(eutral),P(olymorfism)
 # MutationAssessor : H(igh), M(edium), L(ow), N(eutral)
 # FATHMM : D(eleterious), T(olerated)
+
+# function to select diff. annotated variants likely to damage protein functioning
+# that were not recognized in previous version of database
 
 filterCharacter<-function(myField,strict=FALSE){
 
@@ -77,6 +77,11 @@ filterCharacter<-function(myField,strict=FALSE){
         filter(is.na(old) | !old%in%topclass)
     return(interesting)
 }
+
+
+#############################
+##### Numeric fields ########
+#############################
 
 # which field have uniquely numeric outcome?
 num_fields<-gsub("_score", "",unique(diffAnnot_num$field))
@@ -110,8 +115,8 @@ subCADD_phred<-diffAnnot_num[diffAnnot_num$field=="CADD_phred",]
 
 # if CADD_score >10 : 10% most deleterious in human genome
 # if CADD_score >20 : 1% most deleterious in human genome
-table(subCADD_phred$old>10)
-table(subCADD_phred$new>10)
+table(subCADD_phred$old>20)
+table(subCADD_phred$new>20)
 
 table(subCADD_phred$old>20,subCADD_phred$new>20,useNA="always")
 
@@ -146,6 +151,16 @@ filterNumeric<-function(myField,myCutoff){
     stop("myField argument must be one of: 'CADD_phred','VEST3_score','GERP.._RS','SiPhy_29way_logOdds'")
     }
 
+    if(myField=="CADD_phred"){
+        print("Recommended cutoff = 20 (1% most deleterious in human genome)")
+    }else if(myField=="VEST3_score"){
+        print("Recommended cutoff = 0.05 (threshold for significance)")
+    }else if(myField=="GERP.._RS"){
+        print("Recommended cutoff = 2")
+    }else{
+        print("Recommended cutoff = 14.2 (90th percentile)")
+    }
+
     tmpSubset<-diffAnnot_num[diffAnnot_num$field==myField,]
     interesting<-tmpSubset%>%
         filter(new>myCutoff)%>%
@@ -153,37 +168,4 @@ filterNumeric<-function(myField,myCutoff){
     return(interesting)
 }
 
-interestCADD<-filterNumeric(myField = "CADD_phred",myCutoff=20)
-
-myVCF<-"subVCF1"
-
-# function to draw graph from gene or VCF of interest
-plotDiffAnnot<-function(perVCF=FALSE,perGene=FALSE,geneOfInt="myGene",myVCF="myVCF",outputGraph="annotGraph.pdf"){
-    
-    if(perVCF==TRUE){
-        diffAnnot%>%
-        filter(VCF==myVCF)%>%
-        ggplot(aes(x=field,fill=Func.refGene))+
-            geom_bar()+
-            xlab("")+
-            theme(axis.text.x = element_text(angle = 90))
-    }
-
-    if(perGene==TRUE){
-        selection<-diffAnnot%>%
-            filter(Gene.refGene==geneOfInt)
-
-        if(dim(selection)[1]>0){
-            ggplot(selection,aes(x=old,y=new,col=Func.refGene))+
-                geom_point()+
-                ggtitle("Gene = ",geneOfInt)+
-                facet_wrap(~field,scales="free")
-        }
-    }
-}
-
-plotDiffAnnot(perVCF=TRUE,myVCF="subVCF1",outputGraph="annotTTN.pdf")
-
-pdf("annotTTN_2.pdf")
-plotDiffAnnot(perGene=TRUE,geneOfInt="TTN",outputGraph="annotTTN.pdf")
-dev.off()
+interestCADD<-filterNumeric(myField = "CADD_phred",myCutoff=20) 
