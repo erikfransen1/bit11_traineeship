@@ -153,7 +153,7 @@ filterNumeric<-function(myField,myCutoff){
 
 interestCADD<-filterNumeric(myField = "CADD_phred",myCutoff=20)
 
-myVCF<-"subVCF1"
+
 
 # function to draw graph from gene or VCF of interest
 plotDiffAnnot<-function(perVCF=FALSE,perGene=FALSE,geneOfInt="myGene",myVCF="myVCF",outputGraph="annotGraph.pdf"){
