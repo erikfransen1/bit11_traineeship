@@ -169,3 +169,4 @@ filterNumeric<-function(myField,myCutoff){
 }
 
 interestCADD<-filterNumeric(myField = "CADD_phred",myCutoff=20) 
+interestSIFT<-filterCharacter(myField="SIFT_pred",strict=FALSE)
