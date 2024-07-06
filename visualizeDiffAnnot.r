@@ -48,7 +48,7 @@ interestingSIFT<-subSIFT%>%
 # MutationAssessor : H(igh), M(edium), L(ow), N(eutral)
 # FATHMM : D(eleterious), T(olerated)
 
-filterCharacter<-function(myField){
+filterCharacter<-function(myField,strict=FALSE){
 
     if (is.null(myField) || length(myField) != 1L || !myField %in% unique(diffAnnot_char$field)) {
     stop("myField argument must be one of: 'SIFT_pred','Polyphen2_HDIV_pred','Polyphen2_HVAR_pred','LRT_pred',
@@ -59,12 +59,16 @@ filterCharacter<-function(myField){
 
     if(myField%in%c("SIFT_pred","LRT_pred","FATHMM_pred")){
         topclass<-"D"
-    } else if (myField%in%c("Polyphen_HDIV_pred","Polyphen2_HVAR_pred")){
+    } else if (myField%in%c("Polyphen_HDIV_pred","Polyphen2_HVAR_pred")&strict==FALSE){
         topclass<-c("D","P")
-    } else if (myField%in%c("MutationTaster_pred")){
-        topclass<-c("A","D")
-    } else {
+    } else if (myField%in%c("Polyphen_HDIV_pred","Polyphen2_HVAR_pred")&strict==TRUE){
+        topclass<-c("D")
+    } else if (myField%in%c(FATHMM_pred)&strict==FALSE){
         topclass<-c("H","M")
+    } else if (myField%in%c(FATHMM_pred)&strict==TRUE){
+        topclass<-"H"
+    } else {
+        topclass<-c("A","D")
     }
 
     interesting<-tmpSubset%>%
