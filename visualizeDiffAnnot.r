@@ -36,7 +36,42 @@ addmargins(table(diffAnnot_char[diffAnnot_char$field=="MutationAssessor_pred",]$
 addmargins(table(diffAnnot_char[diffAnnot_char$field=="FATHMM_pred",]$new,diffAnnot_char[diffAnnot_char$field=="FATHMM_pred",]$old,useNA="always"))
 
 
+subSIFT<-diffAnnot_char[diffAnnot_char$field=="SIFT_pred",]
 
+interestingSIFT<-subSIFT%>%
+    filter(new=="D")%>%
+    filter(is.na(old)|old!="D")
+# SIFT : D(amaging) or T(olerated)
+# Polyphen : D(amaging); P(ossibly damaging), B(enign)
+# LRT_pred : D(eleterious), N(eutral), U(nknown)
+# MutationsTaster : A(utomatic), D(amaging), N(eutral),P(olymorfism)
+# MutationAssessor : H(igh), M(edium), L(ow), N(eutral)
+# FATHMM : D(eleterious), T(olerated)
+
+filterCharacter<-function(myField){
+
+    if (is.null(myField) || length(myField) != 1L || !myField %in% unique(diffAnnot_char$field)) {
+    stop("myField argument must be one of: 'SIFT_pred','Polyphen2_HDIV_pred','Polyphen2_HVAR_pred','LRT_pred',
+    'MutationTaster_pred','MutationAssessor_pred','FATHMM_pred'")
+    }
+
+    tmpSubset<-diffAnnot_char[diffAnnot_char$field==myField,]
+
+    if(myField%in%c("SIFT_pred","LRT_pred","FATHMM_pred")){
+        topclass<-"D"
+    } else if (myField%in%c("Polyphen_HDIV_pred","Polyphen2_HVAR_pred")){
+        topclass<-c("D","P")
+    } else if (myField%in%c("MutationTaster_pred")){
+        topclass<-c("A","D")
+    } else {
+        topclass<-c("H","M")
+    }
+
+    interesting<-tmpSubset%>%
+        filter(new%in%topclass)%>%
+        filter(is.na(old) | !old%in%topclass)
+    return(interesting)
+}
 # which field have uniquely numeric outcome?
 num_fields<-gsub("_score", "",unique(diffAnnot_num$field))
 char_fields<-gsub("_pred", "",unique(diffAnnot_char$field))
@@ -74,14 +109,35 @@ table(subCADD_phred$new>10)
 
 table(subCADD_phred$old>20,subCADD_phred$new>20,useNA="always")
 
-interestingCADD<-subCADD_phred%>%
-    filter(new>20)%>%
-    filter(is.na(old)|old<20)
+# GERP : measure for evolutionary constring
+# https://genome.ucsc.edu/cgi-bin/hgTrackUi?db=hg19&g=allHg19RS_BW
+# RS score threshold of 2 provides high sensitivity while still strongly enriching for truly constrained sites.
 
-filterInterest<-function(myField,myCutoff){
+subGERP<-diffAnnot_num[diffAnnot_num$field=="GERP.._RS",]
+table(subGERP$old>2)
+table(subGERP$new>2)
+table(subGERP$old>2,subGERP$new>2,useNA="always")
+interestingGERP<-subGERP%>%
+    filter(new>2)%>%
+    filter(is.na(old)|old<2)
 
-    if (is.null(myField) || length(myField) != 1L || !myField %in% c("CADD_phred", "VEST3_score")) {
-    stop("myField argument must be one of: 'CADD_phred','VEST3_score'")
+subSiPhy<-diffAnnot_num[diffAnnot_num$field=="SiPhy_29way_logOdds",]
+quantile(subSiPhy$new,seq(0,1,0.1),na.rm=T)
+#     0%    10%    20%    30%    40%    50%    60%    70%    80%    90%   100% 
+#  0.182  2.277  4.034  4.584  5.615  7.206  8.217  9.489 11.936 14.232 20.474
+
+interestingSiPhy<-subSiPhy%>%
+    filter(new>14)%>%
+    filter(is.na(old)|old<14)
+
+# no cutoff found in literature
+#take 90th percentile
+
+#function to select variants with relevant change in annotation
+filterNumeric<-function(myField,myCutoff){
+
+    if (is.null(myField) || length(myField) != 1L || !myField %in% c("CADD_phred", "VEST3_score","GERP.._RS","SiPhy_29way_logOdds")) {
+    stop("myField argument must be one of: 'CADD_phred','VEST3_score','GERP.._RS','SiPhy_29way_logOdds'")
     }
 
     tmpSubset<-diffAnnot_num[diffAnnot_num$field==myField,]
@@ -91,7 +147,7 @@ filterInterest<-function(myField,myCutoff){
     return(interesting)
 }
 
-interestCADD<-filterInterest(myField = "CADD_phred",myCutoff=20)
+interestCADD<-filterNumeric(myField = "CADD_phred",myCutoff=20)
 
 myVCF<-"subVCF1"
 
