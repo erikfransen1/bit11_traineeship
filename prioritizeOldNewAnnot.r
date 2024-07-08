@@ -162,11 +162,11 @@ filterNumeric<-function(myField,myCutoff){
         print("Recommended cutoff = 14.2 (90th percentile)")
     }
 
-    tmpSubset<-diffAnnot_num[diffAnnot_num$field==myField,]
-    interesting<-tmpSubset%>%
+    newDel<-diffAnnot_num%>%
+        filter(field==myField)%>%
         filter(new>myCutoff)%>%
         filter(is.na(old)|old<myCutoff)
-    return(interesting)
+    return(newDel)
 }
 
 interestCADD<-filterNumeric(myField = "CADD_phred",myCutoff=20) 
