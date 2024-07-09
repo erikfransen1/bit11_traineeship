@@ -9,6 +9,7 @@ load("~/diffAnnot_char.rda")
 # using diffAnnot df from previous R script,
 # with numeric and categorical in different files
 
+
 # some annotations are continuous, some categorical
 # unique(diffAnnot_num$field)
 # [1] "SIFT_score"             "Polyphen2_HDIV_score"   "Polyphen2_HVAR_score"
