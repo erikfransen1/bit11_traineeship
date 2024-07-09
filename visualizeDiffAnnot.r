@@ -119,5 +119,6 @@ plotDiffAnnot<-function(VCF,field, perVCF=FALSE,perGene=FALSE,geneOfInt=NULL){
     }    
 }
 
-plotDiffAnnot(field="VEST3_score",perVCF=TRUE,VCF="subVCF9",perGene = TRUE,geneOfInt = "TTN")
-plotDiffAnnot(field="SIFT_pred",perVCF=TRUE,VCF="subVCF9",perGene = TRUE,geneOfInt = "TTN")
+
+# plotDiffAnnot(field="VEST3_score",perVCF=TRUE,VCF="subVCF9",perGene = TRUE,geneOfInt = "TTN")
+# plotDiffAnnot(field="SIFT_pred",perVCF=TRUE,VCF="subVCF9",perGene = TRUE,geneOfInt = "TTN")

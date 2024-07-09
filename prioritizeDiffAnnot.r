@@ -1,4 +1,3 @@
-
 # Prioritize differentially annotated variants
 #################################################
 
@@ -106,4 +105,3 @@ filterNumeric<-function(field){
         filter(is.na(old)|old<myCutoff)
     return(newDel)
 }
-
