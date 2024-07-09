@@ -50,24 +50,24 @@ addmargins(table(diffAnnot_char[diffAnnot_char$field=="FATHMM_pred",]$new,diffAn
 # function to select diff. annotated variants likely to damage protein functioning
 # that were not recognized in previous version of database
 
-filterCharacter<-function(myField,strict=FALSE){
+filterCharacter<-function(field,strict=FALSE){
 
-    if (is.null(myField) || length(myField) != 1L || !myField %in% unique(diffAnnot_char$field)) {
-    stop("myField argument must be one of: 'SIFT_pred','Polyphen2_HDIV_pred','Polyphen2_HVAR_pred','LRT_pred',
+    if (is.null(field) || length(field) != 1L || !field %in% unique(diffAnnot_char$field)) {
+    stop("field argument must be one of: 'SIFT_pred','Polyphen2_HDIV_pred','Polyphen2_HVAR_pred','LRT_pred',
     'MutationTaster_pred','MutationAssessor_pred','FATHMM_pred'")
     }
 
-    tmpSubset<-diffAnnot_char[diffAnnot_char$field==myField,]
+    tmpSubset<-diffAnnot_char[diffAnnot_char$field==field,]
 
-    if(myField%in%c("SIFT_pred","LRT_pred","FATHMM_pred")){
+    if(field%in%c("SIFT_pred","LRT_pred","FATHMM_pred")){
         topclass<-"D"
-    } else if (myField%in%c("Polyphen_HDIV_pred","Polyphen2_HVAR_pred")&strict==FALSE){
+    } else if (field%in%c("Polyphen_HDIV_pred","Polyphen2_HVAR_pred")&strict==FALSE){
         topclass<-c("D","P")
-     } else if (myField%in%c("Polyphen_HDIV_pred","Polyphen2_HVAR_pred")&strict==TRUE){
+     } else if (field%in%c("Polyphen_HDIV_pred","Polyphen2_HVAR_pred")&strict==TRUE){
         topclass<-c("D")
-    } else if (myField=="FATHMM_pred"&strict==FALSE){
+    } else if (field=="FATHMM_pred"&strict==FALSE){
         topclass<-c("H","M")
-    } else if (myField=="FATHMM_pred"&strict==FALSE){
+    } else if (field=="FATHMM_pred"&strict==FALSE){
         topclass<-c("H")
     } else {
         topclass<-c("A","D")
@@ -146,28 +146,33 @@ interestingSiPhy<-subSiPhy%>%
 #take 90th percentile
 
 #function to select variants with relevant change in annotation
-filterNumeric<-function(myField,myCutoff){
+filterNumeric<-function(field){
 
-    if (is.null(myField) || length(myField) != 1L || !myField %in% c("CADD_phred", "VEST3_score","GERP.._RS","SiPhy_29way_logOdds")) {
-    stop("myField argument must be one of: 'CADD_phred','VEST3_score','GERP.._RS','SiPhy_29way_logOdds'")
+    if (is.null(field) || length(field) != 1L || !field %in% c("CADD_phred", "VEST3_score","GERP.._RS","SiPhy_29way_logOdds")) {
+    stop("field argument must be one of: 'CADD_phred','VEST3_score','GERP.._RS','SiPhy_29way_logOdds'")
     }
 
-    if(myField=="CADD_phred"){
-        print("Recommended cutoff = 20 (1% most deleterious in human genome)")
-    }else if(myField=="VEST3_score"){
-        print("Recommended cutoff = 0.05 (threshold for significance)")
-    }else if(myField=="GERP.._RS"){
-        print("Recommended cutoff = 2")
+    # use recommended cutoffs for numeric annotation fields
+    if(field=="CADD_phred"){
+        myCutoff<-20
+        print("Used recommended cutoff for CADD_phred (20  = 1% most deleterious in human genome)")
+    }else if(field=="VEST3_score"){
+        myCutoff<-0.05
+        print("Used recommended cutoff for VEST3_score (0.05 = threshold for significance)")
+    }else if(field=="GERP.._RS"){
+        myCutoff<-2
+        print("Used recommended cutoff for GERP (2)")
     }else{
-        print("Recommended cutoff = 14.2 (90th percentile)")
+        myCutoff<-14.2
+        print("Used recommended cutoff for SiPhy_29way_logOdds (14.2 = 90th percentile)")
     }
 
     newDel<-diffAnnot_num%>%
-        filter(field==myField)%>%
+        filter(field==field)%>%
         filter(new>myCutoff)%>%
         filter(is.na(old)|old<myCutoff)
     return(newDel)
 }
 
-interestCADD<-filterNumeric(myField = "CADD_phred",myCutoff=20) 
-interestSIFT<-filterCharacter(myField="SIFT_pred",strict=FALSE)
+interestCADD<-filterNumeric(field = "CADD_phred") 
+interestSIFT<-filterCharacter(field="SIFT_pred",strict=FALSE)
