@@ -79,9 +79,18 @@ These 10 resulting VCF files were used to create an annotation script that compa
 - using positional arguments to :
     - specify what databases (or versions thereof) were to be compared
     - specify the output directory to store the VCF with the old resp. new annotations 
-The script needs additional positional arguments to e.g. specify the directory where the input VCFs are located.
-Resulting annotated VCF files (stored in the specified folders) serve as input for an R script that compares old and new annotation.
+The script could be made more flexible by additional positional arguments to e.g. specify the directory where the input VCFs are located.
+Resulting annotated VCF files are stored in 2 separate folders for the old resp. new annotations. THese serve as input for an R script listing the differences between the old and the new annotation.
 
-### Comparing old and new annotation
-This R script reads in the output from the previous (annotPositArg.sh) script, for each VCF reading in the old and new annotations respectively. Then the script seaches for INFO fields that are common to the old and new annotations, and subsequently loops over all common INFO fields, saving the differentially annotated fields in an output table. 
-Starting from the table with differential annotations, plots are generated to visualize the annotation on the level of the VCF file or on the level of a gene of interest.
+### List differential annotation (listDiffAnnot.R)
+This R script reads in the output from the previous (annotPositArg.sh) script, for each VCF reading in the old and new annotations respectively. Then the script seaches for INFO fields that are common to the old and new annotations, and subsequently loops over all common INFO fields, saving the differentially annotated fields in an output table. The table also includes variants with some annotation in the new database that had no annotation in the old one.
+The list of differentially annotated variants serves as input for the next script, where the biologically relevant variants are detected.
+
+### Prioritize biologically relevant differential annotations (prioritizeDiffAnnot.R)
+The previously generated table with differential annotations contains all variants having a different annotation in the oldversus the new database, but not all changes may be biologically relevant. In particular, researchers are primarily interested in variants that potentially affect protein function. The prioritizeDiffAnnot.R contains two functions (one for numeric and one for character annotations) to searches for variants that are predicted to be functional in the new annotations, while they were un-annotated or predicted to be nonfunctional in the old annotation. 
+The annotation field of interest must be specified by the user. For numeric annotations, the script uses the recommended cutoff for biological relevance for the given annotation field to pick out the variants that were below this cutoff in the previous annotation, but above cutoff in the new annotation. For character annotations, where variants are typically classified a damaging or possibly damaging, the user can specify a level of stringency: are only variants considered for which the new annotation predicts the strongest effect on protein function (eg probably damaging), or are also variants included with a less certain effect on protein function (eg. possibly damaging). 
+The script in its current state only works for functional annotation fields common to two db for the prediction of nonsynonymous variants : ljb26_all (old) and dbnsfp30a (new). The cutoffs for the different fields are hard-coded, so there is not (yet) flaxibility to use this script for other annotations databases. 
+
+### Visualize biologically relevant differential annotation (visualizeDiffAnnot.R)
+This is a script that visualize the differential annotations and the subset that becomes biologically relevant in the new annotation. Mandatory arguments include the VCF and the annotation field of interest. Starting for all differential annotations in a given input VCF for a given annotation field, the prioritizing functions discussed above are applied to flag the newly deleterious variants that were un-annotated or not likely to be deleterious in the previous database. 
+The user can choose for a bar chart that counts the number of differential and newly deleterious variants per type of variant, or for a scatterplot showing the old annotation versus the new one, with a different color for the newly deleterious variants. For the character annotations, a jitterplot is generated to avoid overplotting.
