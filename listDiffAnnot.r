@@ -45,18 +45,18 @@ for(j in 1:length(oldAnnot)){
 
         # grep common info fields in old and new annotation files
         grepCol<-grep(commonINFO[i],names(newVCF))
-        tmpNew<-newVCF[,c(1:7,grepCol)]
+        tmpNew<-newVCF[,c(1:7,9,grepCol)]
         tmpNew<-tmpNew %>% 
             filter(if_all(c(Chr,Start, Ref, Alt), ~!is.na(.)))
-        names(tmpNew)[8]<-"new"
+        names(tmpNew)[9]<-"new"
 
         grepCol<-grep(commonINFO[i],names(oldVCF))
-        tmpOld<-oldVCF[,c(1:7,grepCol)]
+        tmpOld<-oldVCF[,c(1:7,9,grepCol)]
         tmpOld<-tmpOld %>% 
             filter(if_all(c(Chr,Start, Ref, Alt), ~!is.na(.)))
-        names(tmpOld)[8]<-"old"
+        names(tmpOld)[9]<-"old"
 
-        oldNew<-merge(tmpOld,tmpNew,by=c("Chr","Start","Ref","Alt","Func.refGene","Gene.refGene"))
+        oldNew<-merge(tmpOld,tmpNew,by=c("Chr","Start","Ref","Alt","Func.refGene","Gene.refGene","ExonicFunc.refGene"))
             oldNew<-oldNew %>% 
                 filter(!is.na(old)|!is.na(new))%>%
                 filter(if_all(c(Chr,Start, Ref, Alt), ~!is.na(.)))
