@@ -6,6 +6,7 @@
 # interestSIFT<-filterCharacter(field="SIFT_pred",strict=FALSE)
 
 library(RColorBrewer)
+library(Hmisc)
 
 ##### function to draw graph from gene or VCF of interest
     # per VCF : barchart of differential annotation 
@@ -24,7 +25,14 @@ library(RColorBrewer)
     # (but still hard-coded)
     # cutoff for numeric annotations : using default in script prioritize
 
-plotDiffAnnot<-function(VCF,field, perVCF=FALSE,perGene=FALSE,geneOfInt=NULL){
+plotDiffAnnot<-function(VCF,field, graphType=c("barplot","scatterplot"),geneOfInt=NULL){
+
+    if(is.null(VCF)){
+        stop("Must specify VCF file")
+    }
+    if(VCF%nin%unique(diffAnnot_char$VCF)){
+        stop("Given VCF is not present in list with differential annotations")
+    }
 
     if(field%in%c("CADD_phred", "VEST3_score","GERP.._RS","SiPhy_29way_logOdds")){
         fieldtype<-"numeric"
@@ -37,10 +45,9 @@ plotDiffAnnot<-function(VCF,field, perVCF=FALSE,perGene=FALSE,geneOfInt=NULL){
         'MutationAssessor_pred','FATHMM_pred'")
     }
 
-
     # create tables for given field, with all diff annot and 
     # annot creating a newly deleterious variant
-    #need separate function for numeric and character annotations
+    # need separate function for numeric and character annotations
     if(fieldtype=="numeric"){
         newDel<-filterNumeric(field=field)
         origTable<-diffAnnot_num%>%
@@ -54,51 +61,45 @@ plotDiffAnnot<-function(VCF,field, perVCF=FALSE,perGene=FALSE,geneOfInt=NULL){
     # add column if differentially annotated variant is creating new deleterious variant
     origTable$newDel <- do.call(paste0, origTable) %in% do.call(paste0, newDel)
 
-    if(perVCF==FALSE & perGene==FALSE){
-        stop("must specify either perVCF or perGene")
-    }
-
-    # option perVCF : 
+    
+    # option barplot : 
         # count total + interesting diff. annotations per variant type
-        #start with complete table of differential annotations (either character or numeric)
+        # start with complete table of differential annotations (either character or numeric)
         # annotation field = specified previously (generation of interesting list)
-
-    if(perVCF==TRUE){
-        if(is.null(VCF)){
-            stop("Must specify VCF file")
-        }
-        #pdf(paste("barplot",myVCF,".pdf"))
+    if(is.null(graphType)){
+        stop("Must supply graph type")
+    }else if(graphType=="barplot"){
         origTable%>%
             filter(VCF==VCF)%>%
             ggplot(aes(x=Func.refGene,fill=newDel))+
                 geom_bar(position=position_dodge(preserve = "single"))+
                 xlab("")+
                 theme(axis.text.x = element_text(angle = 90))+
-                #xlab("interesting differential annotation")+
                 scale_fill_brewer(palette = "Set1",direction=-1)+
                 labs(fill= "Newly deleterious variant")+
-                ggtitle(paste(VCF,"field =",field))
-        #dev.off()
-    }
-
-    # option perGene:
+                ggtitle(paste(VCF,"\nfield =",field))
+    }else if(graphType=="scatter"){
+    # option scatterplot:
         # visualize if there are newly deleterious variants
-        # for given gene of interest
-        # for given field
+        # for given field (mandatory arg)
+        # for given gene of interest (optional argument)
         # highlight in graph versus new annotations not creating newly deleterious var.  
-    if(perGene==TRUE){
+    
         if(is.null(geneOfInt)){
-            stop("Must specify gene of interest")
+            selection<-origTable%>%
+                filter(VCF==VCF)
+            message("No gene of interest specified. All genes are visualized")
+        }else{
+            selection<-origTable%>%
+                filter(Gene.refGene==geneOfInt)%>%
+                filter(VCF==VCF)
         }
-        selection<-origTable%>%
-            filter(Gene.refGene==geneOfInt)
 
         if(dim(selection)[1]>0){
             if(fieldtype=="character"){
                 ggplot(selection,aes(x=old,y=new,col=newDel))+
                 geom_jitter(width=0.2,height=0.2)+
                 ggtitle(paste(VCF, "\nGene = ",geneOfInt, "\nField =", field))+
-                # facet_wrap(~field,scales="free")+
                 theme(axis.text.x = element_text(angle = 0))+
                 scale_color_brewer(palette = "Set1",direction=-1)+
                 labs(col= "Newly\ndeleterious\nvariant")
@@ -106,19 +107,18 @@ plotDiffAnnot<-function(VCF,field, perVCF=FALSE,perGene=FALSE,geneOfInt=NULL){
                 ggplot(selection,aes(x=old,y=new,col=newDel))+
                 geom_point()+
                 ggtitle(paste(VCF, "\nGene = ",geneOfInt, "\nField =", field))+
-                # facet_wrap(~field,scales="free")+
                 theme(axis.text.x = element_text(angle = 0))+
                 scale_color_brewer(palette = "Set1",direction=-1)+
                 labs(col= "Newly\ndeleterious\nvariant")
             }
-            
-            
         }else{
             message("No differentially annotated variants in gene of interest")
         }
-    }    
+    }else{
+        stop(paste("Graph type",graphType,"is currently not supported"))
+    }
 }
 
-
-# plotDiffAnnot(field="VEST3_score",perVCF=TRUE,VCF="subVCF9",perGene = TRUE,geneOfInt = "TTN")
-# plotDiffAnnot(field="SIFT_pred",perVCF=TRUE,VCF="subVCF9",perGene = TRUE,geneOfInt = "TTN")
+#plotDiffAnnot(VCF="subVCF7",field="VEST3_score",graphType="barplot",geneOfInt = "KCNQ4")
+#plotDiffAnnot(field="CADD_phred",VCF="subVCF9",geneOfInt = "TTN",graphType="scatter")
+#plotDiffAnnot(field="SIFT_pred",VCF="subVCF9",geneOfInt = "TTN",graphType="scatter")
