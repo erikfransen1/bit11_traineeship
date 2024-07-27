@@ -35,7 +35,7 @@ plotDiffAnnot<-function(VCF,field, outputType=c("barplot","scatterplot","table")
         origTable<-diffAnnot_num%>%
             filter(field==field)
     }else if(fieldtype=="character"){
-        newDel<-filterCharacter(field=field, strict=FALSE)
+        newDel<-filterCharacter(field=field)
         origTable<-diffAnnot_char%>%
             filter(field==field)
     }
