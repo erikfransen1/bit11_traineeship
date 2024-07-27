@@ -1,13 +1,13 @@
-#library(Hmisc)
-#library(tidyverse)
-#library(ggplot2)
-
+# library(Hmisc)
+# library(tidyverse)
+# library(ggplot2)
+# 
 # setwd("C:/Users/fransen/OneDrive - Universiteit Antwerpen/Documenten/GitHub/bit11_traineeship")
 # load("diffAnnot_char.rda")
 # load("diffAnnot_num.rda")
 
 
-plotDiffAnnot<-function(VCF,field, graphType=c("barplot","scatterplot"),geneOfInt=NULL,exonicOnly=FALSE){
+plotDiffAnnot<-function(VCF,field, outputType=c("barplot","scatterplot","table"),geneOfInt=NULL,exonicOnly=FALSE){
 
     if(is.null(VCF)){
         stop("Must specify VCF file")
@@ -65,8 +65,8 @@ plotDiffAnnot<-function(VCF,field, graphType=c("barplot","scatterplot"),geneOfIn
     
     
     #error if no graph type is selected
-    if(is.null(graphType)){
-        stop("Must supply graph type")
+    if(is.null(outputType)){
+        stop("Must supply type of output: scatter, barplot or table")
     }
 
     if(dim(selection)[1]==0){
@@ -78,7 +78,7 @@ plotDiffAnnot<-function(VCF,field, graphType=c("barplot","scatterplot"),geneOfIn
         # start with complete table of differential annotations (either character or numeric)
         # annotation field = specified previously (generation of interesting list)
         
-      if(graphType=="barplot"){
+      if(outputType=="barplot"){
         if(exonicOnly==FALSE){
           ggplot(selection,aes(x=Func.refGene,fill=newDel))+
             geom_bar(position=position_dodge(preserve = "single"))+
@@ -104,7 +104,7 @@ plotDiffAnnot<-function(VCF,field, graphType=c("barplot","scatterplot"),geneOfIn
           # for given gene of interest (optional argument)
           # highlight in graph versus new annotations not creating newly deleterious var. 
           
-      }else if(graphType=="scatter"){
+      }else if(outputType=="scatter"){
         if(exonicOnly==FALSE){
           if(fieldtype=="character"){
             ggplot(selection,aes(x=old,y=new,col=newDel))+
@@ -138,19 +138,11 @@ plotDiffAnnot<-function(VCF,field, graphType=c("barplot","scatterplot"),geneOfIn
               labs(col= "Newly\ndeleterious\nvariant")
           }
         }
+      }else if(outputType=="table"){
+        write.table(selection,file="diffAnnotVariants.txt",row.names=FALSE,quote=FALSE,sep="\t")
       }else{
-        stop(paste("Graph type",graphType,"is currently not supported"))
+        stop(paste("Output type",graphType,"is currently not supported"))
       }
     }
 }
 
-
-
-# plotDiffAnnot(VCF="subVCF9",field="CADD_phred",graphType="barplot")
-# plotDiffAnnot(VCF="subVCF9",field="CADD_phred",graphType="barplot",exonicOnly = TRUE)
-# plotDiffAnnot(VCF="subVCF7",field="VEST3_score",graphType="barplot",geneOfInt = "TTN",exonicOnly = TRUE)
-# plotDiffAnnot(VCF="subVCF7",field="VEST3_score",graphType="barplot",geneOfInt = "ahf zcreuy")
-# plotDiffAnnot(VCF="subVCF7",field="VEST3_score",graphType="barplot",geneOfInt = "KCNQ4")
-# plotDiffAnnot(field="CADD_phred",VCF="subVCF9",geneOfInt = "TTN",graphType="scatter")
-# plotDiffAnnot(field="SIFT_pred",VCF="subVCF9",geneOfInt = "TTN",graphType="scatter")
-# plotDiffAnnot(field="SIFT_pred",VCF="subVCF9",graphType="scatter")
