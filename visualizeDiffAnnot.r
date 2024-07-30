@@ -1,13 +1,7 @@
-# library(Hmisc)
-# library(tidyverse)
-# library(ggplot2)
-# 
-# setwd("C:/Users/fransen/OneDrive - Universiteit Antwerpen/Documenten/GitHub/bit11_traineeship")
-# load("diffAnnot_char.rda")
-# load("diffAnnot_num.rda")
-
-
 plotDiffAnnot<-function(VCF,field, outputType=c("barplot","scatterplot","table"),geneOfInt=NULL,exonicOnly=FALSE){
+
+  load("diffAnnot_char.rda")
+  load("diffAnnot_num.rda")
 
     if(is.null(VCF)){
         stop("Must specify VCF file")
@@ -35,7 +29,7 @@ plotDiffAnnot<-function(VCF,field, outputType=c("barplot","scatterplot","table")
         origTable<-diffAnnot_num%>%
             filter(field==field)
     }else if(fieldtype=="character"){
-        newDel<-filterCharacter(field=field)
+        newDel<-filterCharacter(field=field, strict=FALSE)
         origTable<-diffAnnot_char%>%
             filter(field==field)
     }
@@ -68,6 +62,8 @@ plotDiffAnnot<-function(VCF,field, outputType=c("barplot","scatterplot","table")
     if(is.null(outputType)){
         stop("Must supply type of output: scatter, barplot or table")
     }
+
+  pdf("GrapfDiffAnnot.pdf")
 
     if(dim(selection)[1]==0){
       message("No differentially annotated variants in gene of interest")
@@ -144,5 +140,6 @@ plotDiffAnnot<-function(VCF,field, outputType=c("barplot","scatterplot","table")
         stop(paste("Output type",graphType,"is currently not supported"))
       }
     }
+  dev.off()
 }
 
