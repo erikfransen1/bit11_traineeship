@@ -2,8 +2,8 @@
 #################################################
 
 # load workspace from previous script
-load("~/diffAnnot_num.rda")
-load("~/diffAnnot_char.rda")
+# load("~/diffAnnot_num.rda")
+# load("~/diffAnnot_char.rda")
 
 # using diffAnnot df from previous R script,
 # with numeric and categorical in different files
@@ -44,6 +44,9 @@ load("~/diffAnnot_char.rda")
 # that were not recognized in previous version of database
 
 filterCharacter<-function(field,strict=FALSE){
+
+  load("diffAnnot_char.rda")
+  load("diffAnnot_num.rda")
 
     if (is.null(field) || length(field) != 1L || !field %in% unique(diffAnnot_char$field)) {
     stop("field argument must be one of: 'SIFT_pred','Polyphen2_HDIV_pred','Polyphen2_HVAR_pred','LRT_pred',
