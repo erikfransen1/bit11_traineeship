@@ -1,3 +1,5 @@
+# !/bin/bash
+
 ## annotate subVCF with various annotations
 
 # add folder with perl scripts from annovar to $PATH
@@ -18,22 +20,23 @@
 # new = dbnsfp30a
 # old = ljb26_all
 
-# !/bin/bash
+# system("\\./annotPositArg.sh ljb26_all dbnsfp30a oldAnnot3 newAnnot3 /home/efransen/ownVCF/allsubVCF/")
 
  oldannot=$1
  newannot=$2
  oldannotFolder=$3
  newannotFolder=$4
+ workdir=$5
 
-myDir=$(find /home/efransen/ownVCF/allsubVCF/ -type f -iname "*")
+myDir=$(find $workdir -type f -iname "*")
 
 cd /home/efransen
  
 for file in $myDir; do
         echo "$file"
         filename=$(basename $file)
-        table_annovar.pl $file annovar/humandb/ -buildver hg19 -out outputAnnovar/myNewAnno$filename -remove -protocol refGene,$newannot -operation g,f -nastring . -polish -vcfinput
-        table_qnnovar.pl $file annovar/humandb/ -buildver hg19 -out outputAnnovar/myOldAnno$filename -remove -protocol refGene,$oldannot -operation g,f -nastring . -polish -vcfinput
+        perl ~/annovar/table_annovar.pl $file ~/annovar/humandb/ -buildver hg19 -out ~/outputAnnovar/myNewAnno$filename -remove -protocol refGene,$newannot -operation g,f -nastring . -polish -vcfinput
+        perl ~/annovar/table_annovar.pl $file ~/annovar/humandb/ -buildver hg19 -out ~/outputAnnovar/myOldAnno$filename -remove -protocol refGene,$oldannot -operation g,f -nastring . -polish -vcfinput
     done
 
 
@@ -45,7 +48,6 @@ for file in $myDir; do
 
 mkdir -p $oldannotFolder
 mkdir -p $newannotFolder
-mv outputAnnovar/myOldAnnosub* $oldannotFolder/
-mv outputAnnovar/myNewAnnosub* $newannotFolder/
-
+mv ~/outputAnnovar/myOldAnnosub* $oldannotFolder/
+mv ~/outputAnnovar/myNewAnnosub* $newannotFolder/
 
