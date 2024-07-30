@@ -104,10 +104,10 @@ listDiffAnnot<-function(workdir,subdirOld,subdirNew){
     # remove what's no longer needed
     rm(oldNew,tmpNew,tmpOld,oldVCF,newVCF)
 
+    save(diffAnnot_char,file="~/diffAnnot_char.rda")
+    save(diffAnnot_num,file="~/diffAnnot_num.rda")
+
 }
 
-# listDiffAnnot(workdir="/home/efransen", subdirOld="oldAnnot3",subdirNew="newAnnot3")
-
-#produces 2 dataframes with resp character and numeric differential annotation
 
 
