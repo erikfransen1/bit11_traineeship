@@ -63,8 +63,6 @@ plotDiffAnnot<-function(VCF,field, outputType=c("barplot","scatterplot","table")
         stop("Must supply type of output: scatter, barplot or table")
     }
 
-  pdf("GrapfDiffAnnot.pdf")
-
     if(dim(selection)[1]==0){
       message("No differentially annotated variants in gene of interest")
     }else if(dim(selection)[1]>0){
@@ -140,6 +138,5 @@ plotDiffAnnot<-function(VCF,field, outputType=c("barplot","scatterplot","table")
         stop(paste("Output type",graphType,"is currently not supported"))
       }
     }
-  dev.off()
 }
 
