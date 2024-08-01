@@ -25,8 +25,8 @@ option_list <- list(
               help="Directory to store VCF with old annotation (if need2annot=TRUE), or where previously annotated VCF is located (if need2annot=FALSE)"),
   make_option("--newDir", default="newAnnot", type="character",
               help="Directory to store VCF with new annotation (if need2annot=TRUE), or where previously annotated VCF is located (if need2annot=FALSE)."),
-  make_option("--VCFdir", default=".", metavar = "VCF directory",type="character",
-              help="Subdirectory where the raw VCF files are located. Only applicable is need2annot=TRUE" ),
+  make_option("--VCFdir", metavar = "VCF directory",type="character",
+              help="Subdirectory where the raw VCF files are located. Mandatory argument if need2annot=TRUE" ),
   make_option(c("-w","--workdir"), default=".", metavar = "Home directory",type="character",
                 help="Home directory (oldDir and newDir must be subdirectory of this directory)"),
   make_option(c("-V","--VCF"), metavar = "VCF file",
@@ -91,8 +91,12 @@ if(is.null(opt$field)){
 
 # run ANNOVAR if requested
 if(opt$need2annot==TRUE){
+  if(is.null(opt$VCFdir)){
+    stop("Must supply a VCF directory containing raw unannotated VCF files")
+  }else{
     message(paste("Running ANNOVAR using on all VCF files in directory",opt$VCFdir))
     system(paste("~/annotPositArg.sh",opt$oldDb,opt$newDb,opt$oldDir,opt$newDir,opt$VCFdir))
+  } 
 }else{
     message(paste("Retrieving previously annotated VCFs form directories",opt$oldDir,"and",opt$newDir))
 }
