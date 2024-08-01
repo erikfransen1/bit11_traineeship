@@ -75,6 +75,9 @@ filterCharacter<-function(field,strict=FALSE){
         filter(new%in%topclass)%>%
         filter(is.na(old) | !old%in%topclass)
     return(newDel)
+
+    rm(tmpSubset)
+    gc()
 }
 
 
