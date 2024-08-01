@@ -14,7 +14,7 @@ suppressPackageStartupMessages(library("vcfR"))
 option_list <- list( 
   make_option(c("-v", "--verbose"), action="store_true", default=TRUE,
         help="Print extra output [default]"),
-  make_option("--need2annot", action="store_true", default=FALSE,
+  make_option(c("-a","--need2annot"), action="store_true", default=FALSE,
               help="Is annotation using ANNOVAR needed (default no)? 
               If not selected, the program searches for existing annotated VCFs in the oldDb and newDb directories"),
   make_option("--oldDb", default="ljb26_all", metavar="Old annotation database",type="character",
@@ -27,21 +27,23 @@ option_list <- list(
               help="Directory to store VCF with new annotation (if need2annot=TRUE), or where previously annotated VCF is located (if need2annot=FALSE)."),
   make_option("--VCFdir", default=".", metavar = "VCF directory",type="character",
               help="Subdirectory where the raw VCF files are located. Only applicable is need2annot=TRUE" ),
-  make_option("--workdir", default=".", metavar = "Home directory",type="character",
+  make_option(c("-w","--workdir"), default=".", metavar = "Home directory",type="character",
                 help="Home directory (oldDir and newDir must be subdirectory of this directory)"),
-  make_option("--VCF", metavar = "VCF file",
+  make_option(c("-V","--VCF"), metavar = "VCF file",
               help="Name of VCF file from which differential annotation have to be visualized"),
-  make_option("--field", metavar = "Annotation field",
+  make_option(c("-f","--field"), metavar = "Annotation field",
               help="Annotation field from which differential annotation have to be visualized"),
-  make_option("--gene", metavar = "Gene of interest",
+  make_option(c("-g","--gene"), metavar = "Gene of interest",
               help="Gene from which variants with differential annotation have to be visualized. 
               If no gene is selected, all differentially annotated variants are shown"),
-  make_option("--output", default="barplot",metavar = "Output type",type="character",
+  make_option(c("-o","--output"), default="barplot",metavar = "Output type",type="character",
               help="Which output should be generated to visualize differential annotation? 
-              Current options include barplot (default), scatterplot, table"),
+              Current options include barplot (default), scatterplot, table. 
+              Option table creates a file TableDiffAnnotVariants.txt in the current working directory.
+              Options scatter and barplot create a file GraphDiffAnnotVariants.pdf in the current working directory"),
   #make_option("--graphname", default="GraphDiffAnnot",metavar = "Name of output graph",type="character",
   #            help="Name of the output graph. Only applicable if the output is scatter or barplot. The extension .pdf is automatically added."),
-  make_option("--exonic", action="store_true", default=FALSE,
+  make_option(c("-e","--exonic"), action="store_true", default=FALSE,
               help="Include only exonic variants in visualization. 
               In case a scatterplot is selected, the exonic functions (stopgain, synonymous...) 
               are plotted instead of the default functional annotation (exonic, intronic, 3'UTR...)")
@@ -103,9 +105,14 @@ listDiffAnnot(workdir=opt$workdir, subdirOld=opt$oldDir,subdirNew=opt$newDir)
 source("prioritizeDiffAnnot.r")
 source("visualizeDiffAnnot.r")
 
-pdf("GraphDiffAnnot.pdf")
+if(opt$output=="table"){
   plotDiffAnnot(VCF=opt$VCF,field=opt$field,outputType=opt$output,exonicOnly=opt$exonic,geneOfInt=opt$gene)
-dev.off()
+}else if(opt$output%in%c("scatter","barplot")){
+  pdf("GraphDiffAnnotVariants.pdf")
+    plotDiffAnnot(VCF=opt$VCF,field=opt$field,outputType=opt$output,exonicOnly=opt$exonic,geneOfInt=opt$gene)
+  dev.off()
+}
+
 
 
 
