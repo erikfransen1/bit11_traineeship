@@ -45,10 +45,8 @@
 
 filterCharacter<-function(field,strict=FALSE){
 
-  # load("diffAnnot_char.rda")
-  # load("diffAnnot_num.rda")
-
-  load('mySession.RData')
+  load("diffAnnot_char.rda")
+  load("diffAnnot_num.rda")
 
     if (is.null(field) || length(field) != 1L || !field %in% unique(diffAnnot_char$field)) {
     stop("field argument must be one of: 'SIFT_pred','Polyphen2_HDIV_pred','Polyphen2_HVAR_pred','LRT_pred',
