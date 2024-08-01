@@ -7,10 +7,6 @@ suppressPackageStartupMessages(library("Hmisc"))
 suppressPackageStartupMessages(library("vcfR"))
 
 
-# specify our desired options in a list
-# by default OptionParser will add an help option equivalent to 
-# make_option(c("-h", "--help"), action="store_true", default=FALSE, 
-#               help="Show this help message and exit")
 option_list <- list( 
   make_option(c("-v", "--verbose"), action="store_true", default=TRUE,
         help="Print extra output [default]"),
@@ -44,8 +40,10 @@ option_list <- list(
               The scatterplot shows the old versis the new annotation, labeling the newly deleterious variants. 
               The barplot counts the different types of variants, either the functional annotation (exonic, intronic,...) if exonic=FALSE, or 
               the exonic function (stopgain, synonymous,...) if exonic=TRUE"),
-  #make_option("--graphname", default="GraphDiffAnnot",metavar = "Name of output graph",type="character",
-  #            help="Name of the output graph. Only applicable if the output is scatter or barplot. The extension .pdf is automatically added."),
+  make_option("--graphname", default="GraphDiffAnnot",metavar = "Name of output graph",type="character",
+              help="Name of the output graph. Only applicable if the output is scatter or barplot. The extension .pdf is automatically added."),
+  make_option("--tablename", default="TableDiffAnnot",metavar = "Name of output table",type="character",
+              help="Name of the output table Only applicable if the output is table. The extension .txt is automatically added."),
   make_option(c("-e","--exonic"), action="store_true", default=FALSE,
               help="Include only exonic variants in visualization. 
               In case a scatterplot is selected, the exonic functions (stopgain, synonymous...) 
@@ -64,7 +62,7 @@ opt_parser <- OptionParser(option_list = option_list,
 opt <- parse_args(opt_parser)
 
 # print some progress messages 
-if ( opt$verbose ) { 
+if (opt$verbose) { 
   message(paste("Comparing annotations between",opt$oldDb,"and",opt$newDb)) 
 }
 
@@ -122,8 +120,8 @@ source("visualizeDiffAnnot.r")
 #  stop("Output must be one of : barplot, scatter, table")
 #}
 
-pdf("GraphDiffAnnotVariants.pdf")
-    plotDiffAnnot(VCF=opt$VCF,field=opt$field,outputType=opt$output,exonicOnly=opt$exonic,geneOfInt=opt$gene)
+pdf(paste0(opt$graphname,'.pdf'))
+    plotDiffAnnot(VCF=opt$VCF,field=opt$field,outputType=opt$output,exonicOnly=opt$exonic,geneOfInt=opt$gene,tablename=opt$tablename)
 dev.off()
 
 
