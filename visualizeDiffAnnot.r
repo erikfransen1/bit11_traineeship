@@ -44,7 +44,6 @@ plotDiffAnnot<-function(VCF,field, outputType=c("barplot","scatterplot","table")
     if(is.null(geneOfInt)){
         selection<-origTable%>%
             filter(VCF==VCF)
-        message("No gene of interest specified. All genes are visualized")
         geneShown<-"all genes"
     }else{
         selection<-origTable%>%
@@ -133,7 +132,7 @@ plotDiffAnnot<-function(VCF,field, outputType=c("barplot","scatterplot","table")
           }
         }
       }else if(outputType=="table"){
-        write.table(selection,file="diffAnnotVariants.txt",row.names=FALSE,quote=FALSE,sep="\t")
+        write.table(selection,file="TableDiffAnnotVariants.txt",row.names=FALSE,quote=FALSE,sep="\t")
       }else{
         stop(paste("Output type",graphType,"is currently not supported"))
       }
