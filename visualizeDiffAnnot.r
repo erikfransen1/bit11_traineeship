@@ -1,4 +1,4 @@
-plotDiffAnnot<-function(VCF,field, outputType=c("barplot","scatterplot","table"),geneOfInt=NULL,exonicOnly=FALSE){
+plotDiffAnnot<-function(VCF,field, outputType=c("barplot","scatterplot","table"),geneOfInt=NULL,exonicOnly=FALSE,tablename="TableDiffAnnot"){
 
   load("diffAnnot_char.rda")
   load("diffAnnot_num.rda")
@@ -135,7 +135,7 @@ plotDiffAnnot<-function(VCF,field, outputType=c("barplot","scatterplot","table")
         }
       }else if(outputType=="table"){
         selection<-selection[selection$field==field&selection$VCF==VCF,]
-        write.table(selection,file="TableDiffAnnotVariants.txt",row.names=FALSE,quote=FALSE,sep="\t")
+        write.table(selection,file=paste0(tablename,'.txt'),row.names=FALSE,quote=FALSE,sep="\t")
       }else{
         stop(paste("Output type",graphType,"is currently not supported"))
       }
