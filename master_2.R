@@ -36,11 +36,14 @@ option_list <- list(
   make_option(c("-g","--gene"), metavar = "Gene of interest",
               help="Gene from which variants with differential annotation have to be visualized. 
               If no gene is selected, all differentially annotated variants are shown"),
-  make_option(c("-o","--output"), default="barplot",metavar = "Output type",type="character",
+  make_option(c("-o","--output"), default="table",metavar = "Output type",type="character",
               help="Which output should be generated to visualize differential annotation? 
-              Current options include barplot (default), scatterplot, table. 
-              Option table creates a file TableDiffAnnotVariants.txt in the current working directory.
-              Options scatter and barplot create a file GraphDiffAnnotVariants.pdf in the current working directory"),
+              The default option generates a table (TableDiffAnnotVariants.txt) in the current working directory, listing all differentially annotated variants. 
+              Variants for which the new annotations reveals a previously unnoticed deleterious variant, are flagged using the variable newDel (newly deleterious).
+              Other output options include a barplot and a scatterplot, which create a file GraphDiffAnnotVariants.pdf in the current working directory. 
+              The scatterplot shows the old versis the new annotation, labeling the newly deleterious variants. 
+              The barplot counts the different types of variants, either the functional annotation (exonic, intronic,...) if exonic=FALSE, or 
+              the exonic function (stopgain, synonymous,...) if exonic=TRUE"),
   #make_option("--graphname", default="GraphDiffAnnot",metavar = "Name of output graph",type="character",
   #            help="Name of the output graph. Only applicable if the output is scatter or barplot. The extension .pdf is automatically added."),
   make_option(c("-e","--exonic"), action="store_true", default=FALSE,
@@ -105,13 +108,20 @@ listDiffAnnot(workdir=opt$workdir, subdirOld=opt$oldDir,subdirNew=opt$newDir)
 source("prioritizeDiffAnnot.r")
 source("visualizeDiffAnnot.r")
 
-if(opt$output=="table"){
-  plotDiffAnnot(VCF=opt$VCF,field=opt$field,outputType=opt$output,exonicOnly=opt$exonic,geneOfInt=opt$gene)
-}else if(opt$output%in%c("scatter","barplot")){
-  pdf("GraphDiffAnnotVariants.pdf")
+#if(opt$output=="table"){
+#  plotDiffAnnot(VCF=opt$VCF,field=opt$field,outputType=opt$output,exonicOnly=opt$exonic,geneOfInt=opt$gene)
+#}else if(opt$output%in%c("scatter","barplot")){
+#  pdf("GraphDiffAnnotVariants.pdf")
+#    plotDiffAnnot(VCF=opt$VCF,field=opt$field,outputType=opt$output,exonicOnly=opt$exonic,geneOfInt=opt$gene)
+#  dev.off()
+#}else{
+#  stop("Output must be one of : barplot, scatter, table")
+#}
+
+pdf("GraphDiffAnnotVariants.pdf")
     plotDiffAnnot(VCF=opt$VCF,field=opt$field,outputType=opt$output,exonicOnly=opt$exonic,geneOfInt=opt$gene)
-  dev.off()
-}
+dev.off()
+
 
 
 

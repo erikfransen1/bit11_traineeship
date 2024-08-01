@@ -1,7 +1,9 @@
 plotDiffAnnot<-function(VCF,field, outputType=c("barplot","scatterplot","table"),geneOfInt=NULL,exonicOnly=FALSE){
 
-  load("diffAnnot_char.rda")
-  load("diffAnnot_num.rda")
+  #load("diffAnnot_char.rda")
+  #load("diffAnnot_num.rda")
+  
+  load('mySession.RData')
 
     if(is.null(VCF)){
         stop("Must specify VCF file")
