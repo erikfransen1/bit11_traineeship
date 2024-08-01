@@ -19,7 +19,7 @@ option_list <- list(
               If not selected, the program searches for existing annotated VCFs in the oldDb and newDb directories"),
   make_option("--oldDb", default="ljb26_all", metavar="Old annotation database",type="character",
               help = "Old database for annotation of functional variants. Currently only ljb26_all is supported"),
-  make_option("--newDb", default=,"dbnsfp30a", metavar="New annotation database",type="character",
+  make_option("--newDb", default="dbnsfp30a", metavar="New annotation database",type="character",
               help = "New database for annotation of functional variants. Currently only ljb26_all is supported"),
   make_option("--oldDir", default="oldAnnot", ,type="character",
               help="Directory to store VCF with old annotation (if need2annot=TRUE), or where previously annotated VCF is located (if need2annot=FALSE)"),
@@ -62,6 +62,27 @@ opt <- parse_args(opt_parser)
 if ( opt$verbose ) { 
   message(paste("Comparing annotations between",opt$oldDb,"and",opt$newDb)) 
 }
+
+# stop messages if mandatory arguments are missing
+if(is.null(opt$oldDir)){
+  stop("No directory was specified to store VCF with old annotation")
+}
+if(is.null(opt$newDir)){
+  stop("No directory was specified to store VCF with new annotation")
+}
+if(is.null(opt$workdir)){
+  message("No working directory was specified. Setting the current directory as working directory")
+}
+if(is.null(opt$VCF)){
+  stop("No VCF file was specified for visualization, with no default")
+}
+if(is.null(opt$field)){
+  stop("No annotation field was specified for visualization, with no default")
+}
+if(is.null(opt$field)){
+  message("No gene of interest specified. All genes are visualized")
+}
+
 
 # run ANNOVAR if requested
 if(opt$need2annot==TRUE){
