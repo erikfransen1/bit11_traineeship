@@ -74,7 +74,7 @@ filterCharacter<-function(field,strict=FALSE){
         filter(is.na(old) | !old%in%topclass)
     return(newDel)
 
-    rm(tmpSubset)
+    rm(tmpSubset,topclass)
     gc()
 }
 
@@ -85,6 +85,9 @@ filterCharacter<-function(field,strict=FALSE){
 
 #function to select variants with relevant change in annotation
 filterNumeric<-function(field){
+
+load("diffAnnot_char.rda")
+load("diffAnnot_num.rda")
 
     if (is.null(field) || length(field) != 1L || !field %in% c("CADD_phred", "VEST3_score","GERP.._RS","SiPhy_29way_logOdds")) {
     stop("field argument must be one of: 'CADD_phred','VEST3_score','GERP.._RS','SiPhy_29way_logOdds'")

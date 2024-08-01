@@ -1,9 +1,9 @@
 plotDiffAnnot<-function(VCF,field, outputType=c("barplot","scatterplot","table"),geneOfInt=NULL,exonicOnly=FALSE){
 
-  #load("diffAnnot_char.rda")
-  #load("diffAnnot_num.rda")
+  load("diffAnnot_char.rda")
+  load("diffAnnot_num.rda")
   
-  load('mySession.RData')
+
 
     if(is.null(VCF)){
         stop("Must specify VCF file")
@@ -134,6 +134,7 @@ plotDiffAnnot<-function(VCF,field, outputType=c("barplot","scatterplot","table")
           }
         }
       }else if(outputType=="table"){
+        selection<-selection[selection$field==field&selection$VCF==VCF,]
         write.table(selection,file="TableDiffAnnotVariants.txt",row.names=FALSE,quote=FALSE,sep="\t")
       }else{
         stop(paste("Output type",graphType,"is currently not supported"))
