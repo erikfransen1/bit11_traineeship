@@ -1,9 +1,9 @@
 # Overview
 
-To develop a script to re-annotate old VCF files w-using the currently available annotations, we decided to work in 3 stages:
-- practicing skills to work on the server and to handle VCF files
-- developing pieces of code one-by-one
-- wrapping the pieces of code to automate
+The purpose of this project was to develop a tool to re-annotate old VCF files using the currently available annotations, and compare the present-day annotations to the annotations based upon older databases.
+
+Since part of the project was about learning additional skills regarding hadling of VCF files, annotation software and working on a server, much time was devoted to practicing. The scripts and example files from this practicing fase, have been stored in the subdirectory 'development'. The actual  scripts of which the tool consists, including the masterscript, are given in the main directory. The subdirectory 'examplefiles' contains short VCF files and intermediate file that can serve to test and practice the script.
+
 
 ## Preparation and practicing
 Before actually taking off with the project, I had to learn several skills to work on the server and to handle and annotate VCF files. These were separately practiced before the actual development of the final code. They include:
