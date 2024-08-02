@@ -1,5 +1,5 @@
 ######## vcfR #############
-setwd("C:/Users/fransen/Dropbox/Howest/11_Traineeship/practiceAnnovar/outputSample.vcf/")
+setwd("C:/Users/fransen/OneDrive - Universiteit Antwerpen/Documenten/GitHub/bit11_traineeship/practiceVCF")
 library(vcfR)
 library(tidyverse)
 

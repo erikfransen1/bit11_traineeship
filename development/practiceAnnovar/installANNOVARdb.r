@@ -34,5 +34,9 @@ annotate_variation.pl -buildver hg19 -downdb -webfrom annovar clinvar_20131105 h
 # new clinvar
 annotate_variation.pl -buildver hg19 -downdb -webfrom annovar clinvar_20240611 humandb/
 
+# alternative annotations in UCSC
+annotate_variation.pl -buildver hg19 -downdb -webfrom annovar knownGene humandb/
 
+# alternative annotations in Ensembl
+annotate_variation.pl -buildver hg19 -downdb -webfrom annovar ensGene humandb/
 
