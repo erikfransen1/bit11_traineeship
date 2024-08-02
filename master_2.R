@@ -110,15 +110,6 @@ listDiffAnnot(workdir=opt$workdir, subdirOld=opt$oldDir,subdirNew=opt$newDir)
 source("prioritizeDiffAnnot.r")
 source("visualizeDiffAnnot.r")
 
-#if(opt$output=="table"){
-#  plotDiffAnnot(VCF=opt$VCF,field=opt$field,outputType=opt$output,exonicOnly=opt$exonic,geneOfInt=opt$gene)
-#}else if(opt$output%in%c("scatter","barplot")){
-#  pdf("GraphDiffAnnotVariants.pdf")
-#    plotDiffAnnot(VCF=opt$VCF,field=opt$field,outputType=opt$output,exonicOnly=opt$exonic,geneOfInt=opt$gene)
-#  dev.off()
-#}else{
-#  stop("Output must be one of : barplot, scatter, table")
-#}
 
 pdf(paste0(opt$graphname,'.pdf'))
     plotDiffAnnot(VCF=opt$VCF,field=opt$field,outputType=opt$output,exonicOnly=opt$exonic,geneOfInt=opt$gene,tablename=opt$tablename)
