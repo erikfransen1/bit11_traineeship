@@ -2,27 +2,28 @@
 
 The purpose of this project was to develop a tool to re-annotate old VCF files using the currently available annotations, and compare the present-day annotations to the annotations based upon older databases.
 
-Since part of the project was about learning additional skills regarding hadling of VCF files, annotation software and working on a server, much time was devoted to practicing. The scripts and example files from this practicing fase, have been stored in the subdirectory 'development'. The actual  scripts of which the tool consists, including the masterscript, are given in the main directory. The subdirectory 'examplefiles' contains short VCF files and intermediate file that can serve to test and practice the script.
+Since part of the project was about learning additional skills regarding handling of VCF files, annotation software and working on a server, we kept the scripts from this practicing phase in the Github page under the subdirectory 'development'. The actual scripts the tool consists of, including the masterscript, are given in the main directory. The subdirectory 'examplefiles' contains short VCF files and intermediate files that can serve to test and practice the script.
 
 
-## Preparation and practicing
-Before actually taking off with the project, I had to learn several skills to work on the server and to handle and annotate VCF files. These were separately practiced before the actual development of the final code. They include:
-- Slurm,the workflow manager on the server
+## Development subdirectory
+Before actually taking off with the project, several skills were trained to work on the server and to handle and annotate VCF files. These were separately practiced before the actual development of the final code. They include:
+-   Slurm,the workflow manager on the server
+-	ANNOVAR, software to annotate VCF files
 -	vcfR, an R package to handle VCF files
 -	biomaRt, and R package serving as API to access ensembl
--	ANNOVAR, software to annotate VCF files
+-   optparse, an R package serving as a command line parser
 
 
 ### Slurm
-The main jobs in this project - annotations of large VCF files - were carried out on a linux server with Ubuntu version **. Jobs on the server have to be submitted by the workload manager Slurm (version **). <br>
+In the initial phase of this project, the main jobs in this project - annotations of large VCF files - were carried out on a linux server with Ubuntu version **. Jobs on the server have to be submitted by the workload manager Slurm (version **). <br>
 Slurm has three key functions to enable working on the server. First, it allocates access to resources (compute nodes) to users for some duration of time so they can perform work. Second, it provides a framework for starting, executing, and monitoring work on the set of allocated nodes. Finally, it arbitrates contention for resources by managing a queue of pending work.
 The first task in this project was to practice working with Slurm. In particular, submitting R jobs to the server.<br>
-Folder **practice Slurm** contains some exercises on the use of Slurm on the server. The Rscript *readin.R* contains commands to read in the input in the file *inputData.txt*. In the Rscript *graph.R* first reads in the data by sourcing the *readin.R*, then runs a custom-made function to generate a graph using tidyverse. The resulting graph is exported to the plot *meanOutcome(logscale).pdf*.<br>
+Subdirectory **practice Slurm** contains some exercises on the use of Slurm on the server. The Rscript *readin.R* contains commands to read in the input in the file *inputData.txt*. In the Rscript *graph.R* first reads in the data by sourcing the *readin.R*, then runs a custom-made function to generate a graph using tidyverse. The resulting graph is exported to the plot *meanOutcome(logscale).pdf*.<br>
 <br>
 
 ### ANNOVAR
 ANNOVAR is a flexible package to annotate VCF files. This program takes an input variant file (such as a VCF file) and generate a tab-delimited output file with many columns, each representing one set of annotations. Additionally, if the input is a VCF file, the program also generates a new output VCF file with the INFO field filled with annotation information. <br>
-Setup and practice of ANNOVAR is shown in the Github repository under the folder **practiceAnnovar**. First step is downloading the appropriate database files using annotate_variation.pl. The code is shown in *installANNOVARdb.r*. Further code from the Quick startup guide is shown in *practiceAnnovarTutorial*.
+Setup and practice of ANNOVAR is shown in the Github repository under the subdirectory **practiceAnnovar**. First step is downloading the appropriate database files using annotate_variation.pl. The code is shown in *installANNOVARdb.r*. Further code from the Quick startup guide is shown in *practiceAnnovarTutorial*.
 The function table_annovar.pl annotates the variants in the VCF file and draws the output in the INFO field. In the practicing run, 4 input files (3VCF and one tab-delimited file) were annotated using the default setting of table_annovar. The code is in *practice_tableAnnovar*.<br>
 The folder practiceAnnovar in the Git repository contains 3 subfolders:
 - outputVCFfromTutorial : practice on ex1.avinput and ex2.vcf (files from ANNOVAR quick startup guise)
@@ -32,16 +33,16 @@ Subsequently, the output from ANNOVAR (ie. the annotated files) were read in via
 <br>
 
 ### vcfR
-vcfR (version 1.15.0) is an R package to handle vcf files in R. We applied vcfR to the VCF files annotated with ANNOVAR, and the code is shown in the githyub repository in folder practiceVCF The document practiceVCF/practiceAnnotVCF_sample.R shows application of vcfR onto the sample.vcf file (supplied by external supervisors).<br>
-On two occasions, we received error messages. These are shown in the code *errorMessages.R*. The first time was due to the presence of the field "GERP++" in one of the INFO fields. The "++" is a regular expression causing an error in the INFO2df() function. This was fixed using the gsub() function, as shown in the code.<br> Subsequently, one of the VCF files showed an error message due to a non-unique ID. The solution to this problem is shown in the paragraph "Development of code", as a custom-made function was made for this.
+vcfR (version 1.15.0) is an R package to handle vcf files in R. We applied vcfR to the VCF files annotated with ANNOVAR, and the code is shown in the Github repository in folder practiceVCF The document practiceVCF/practiceAnnotVCF_sample.R shows application of vcfR onto the sample.vcf file (supplied by external supervisors).<br>
+On two occasions, we received error messages. These are shown in the code *errorMessages.R*. The first time was due to the presence of the field "GERP++" in one of the INFO fields. The "++" is a regular expression causing an error in the INFO2df() function. This was fixed using the gsub() function, as shown in the code.<br> Subsequently, one of the VCF files showed an error message due to a non-unique ID. The solution to this problem is shown in the subdirectory 'nonUniqueID', as a custom-made function was made for this.
 Some more advanced exploration of a vcf file, involving more use of tidyverse functions, was carried out in the script practiceVCF/practiceAnnotVCF_tidyverseSet6.R.<br>
 <br>
 
 ### biomaRt
 biomaRt is an R package serving as an API to access ensembl. The script *practiceBiomaRt.R* contains code from a biomaRt tutorial.<br> 
 
-### Rscript at command line
-The automation of the planned script will require running R scripts at the command line. This can be achieved with the command Rscript in bash. Passing on positional arguments at the commandline to the R functions inside the script is enabled by the optparse R package. Examples and code are in the folder **optparse**<br>
+### optparse
+The automation of the planned script will require running R scripts at the command line. This can be achieved with the command Rscript in bash. Passing on positional arguments at the commandline to the R functions inside the script is enabled by the optparse R package. Examples and code are in the folder **practiceOptparse**<br>
 The *sayHello.R* is a toy example from an R function to be ran at the command line. The scripts *display_file.R* and *example.R* were retrieved from optparse tutorials. The *printScatter.R* is a script that generates a simple scatterplot, but with the arguments from the plot() function (including adding a title, X and Y axis labels, adding a regression line, specifying th color,...) in R supplied via the optparse arguments. The script *parseVCF.R* is a script (still under construction) to parse a VCF file using optparse).<br>
 <br>
 ### Visualization of VCF files
