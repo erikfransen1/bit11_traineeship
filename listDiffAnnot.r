@@ -1,12 +1,10 @@
 #### compare old and new annotation ###########
 
-# using input from bash script with positional arguments
+# using input from bash script annotPositArg.sh
+
 # detect variants with different annotation between old and new database
+# including previously unannotated variants
 
-
-# workdir<-"/home/efransen"
-# subdirOld<-"oldAnnot3"
-# subdirNew<-"newAnnot3"
 
 listDiffAnnot<-function(workdir,subdirOld,subdirNew){
     if(is.null(workdir)){
@@ -104,6 +102,7 @@ listDiffAnnot<-function(workdir,subdirOld,subdirNew){
     # remove what's no longer needed
     rm(oldNew,tmpNew,tmpOld,oldVCF,newVCF)
 
+    # save dataframes to be used in subsequent steps
     save(diffAnnot_char,file="~/diffAnnot_char.rda")
     save(diffAnnot_num,file="~/diffAnnot_num.rda")
 

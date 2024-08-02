@@ -2,13 +2,9 @@
 
 ## annotate subVCF with various annotations
 
-# add folder with perl scripts from annovar to $PATH
-# export PATH="/home/efransen/annovar:$PATH"
-
-# /home/efransen
-# subVCF are in folder ownVCF
+# subVCF are in folder ownVCF/allsubVCF
 # databases are in folder annovar/humandb
-
+#all of which aer subfolders of the home directory
 
 # run over all subVCFs in folder allsubVCF using find function
     # --> full path to file
@@ -20,7 +16,7 @@
 # new = dbnsfp30a
 # old = ljb26_all
 
-# system("\\./annotPositArg.sh ljb26_all dbnsfp30a oldAnnot3 newAnnot3 /home/efransen/ownVCF/allsubVCF/")
+# system("\\./annotPositArg.sh ljb26_all dbnsfp30a oldAnnot4 newAnnot4 /home/efransen/ownVCF/allsubVCF/")
 
  oldannot=$1
  newannot=$2

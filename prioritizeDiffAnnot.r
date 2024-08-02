@@ -1,15 +1,8 @@
 # Prioritize differentially annotated variants
 #################################################
 
-# load workspace from previous script
-# load("~/diffAnnot_num.rda")
-# load("~/diffAnnot_char.rda")
+# only available for 2 databases !
 
-# using diffAnnot df from previous R script,
-# with numeric and categorical in different files
-
-
-# some annotations are continuous, some categorical
 # unique(diffAnnot_num$field)
 # [1] "SIFT_score"             "Polyphen2_HDIV_score"   "Polyphen2_HVAR_score"
 # [4] "LRT_score"              "MutationTaster_score"   "MutationAssessor_score"
