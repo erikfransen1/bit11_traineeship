@@ -64,8 +64,8 @@ The code for some initial exercises is in *vcfstats_commands*. Due to trouble wi
 
 ## Development of a tool to detect and visualize differential annotations
 
-### split one large VCF into subVCF (splitVCF_wsl.R)
-Due to the outage of the server and the scarcity of online VCF files, we needed a number of different VCF files to be able to develop our code for automation. In addition, working with smaller files reduced the computing time during the test runs. Therefore, we developed the splitVCF_wsl.R one large initial VCF was split into 10 VCF files (hereafter referred to as 'subVCF') of 100,000 lines each using the splitVCF_wsl.R script. The meta-part of the original VCF was preserved and used in all subVCF files.<br>
+### split one large VCF into subVCF (splitVCF.R)
+Due to the outage of the server and the scarcity of online VCF files, we needed a number of different VCF files to be able to develop our code for automation. In addition, working with smaller files reduced the computing time during the test runs. Therefore, we developed the splitVCF.R one large initial VCF was split into 10 VCF files (hereafter referred to as 'subVCF') of 100,000 lines each using the splitVCF.R script. The meta-part of the original VCF was preserved and used in all subVCF files.<br>
 The **examplefiles** directory contains 4 of the 10 subVCFs that were used to develop the code.<br>
 
 ### Annotate multiple VCFs with database of choice (annotPositArg.sh)
